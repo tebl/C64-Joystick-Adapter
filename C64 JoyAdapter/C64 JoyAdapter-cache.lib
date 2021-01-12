@@ -1,0 +1,224 @@
+EESchema-LIBRARY Version 2.4
+#encoding utf-8
+#
+# Device_LED
+#
+DEF Device_LED D 0 40 N N 1 F N
+F0 "D" 0 100 50 H V C CNN
+F1 "Device_LED" 0 -100 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ LED*
+ LED_SMD:*
+ LED_THT:*
+$ENDFPLIST
+DRAW
+P 2 0 1 10 -50 -50 -50 50 N
+P 2 0 1 0 -50 0 50 0 N
+P 4 0 1 10 50 -50 50 50 -50 0 50 -50 N
+P 5 0 1 0 -120 -30 -180 -90 -150 -90 -180 -90 -180 -60 N
+P 5 0 1 0 -70 -30 -130 -90 -100 -90 -130 -90 -130 -60 N
+X K 1 -150 0 100 R 50 50 1 1 P
+X A 2 150 0 100 L 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# Device_R_Small
+#
+DEF Device_R_Small R 0 10 N N 1 F N
+F0 "R" 30 20 50 H V L CNN
+F1 "Device_R_Small" 30 -40 50 H V L CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ R_*
+$ENDFPLIST
+DRAW
+S -30 70 30 -70 0 1 8 N
+X ~ 1 0 100 30 D 50 50 1 1 P
+X ~ 2 0 -100 30 U 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# Switch_SW_Push
+#
+DEF Switch_SW_Push SW 0 40 N N 1 F N
+F0 "SW" 50 100 50 H V L CNN
+F1 "Switch_SW_Push" 0 -60 50 H V C CNN
+F2 "" 0 200 50 H I C CNN
+F3 "" 0 200 50 H I C CNN
+DRAW
+C -80 0 20 0 1 0 N
+C 80 0 20 0 1 0 N
+P 2 0 1 0 0 50 0 120 N
+P 2 0 1 0 100 50 -100 50 N
+X 1 1 -200 0 100 R 50 50 0 1 P
+X 2 2 200 0 100 L 50 50 0 1 P
+ENDDRAW
+ENDDEF
+#
+# atari_joystick_Atari_Joystick
+#
+DEF atari_joystick_Atari_Joystick J 0 40 Y N 1 F N
+F0 "J" 0 550 50 H V C CNN
+F1 "atari_joystick_Atari_Joystick" 0 -575 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ DB*M*
+$ENDFPLIST
+DRAW
+C -70 -400 30 0 1 0 F
+C -70 -200 30 0 1 0 F
+C -70 0 30 0 1 0 F
+C -70 200 30 0 1 0 F
+C -70 400 30 0 1 0 F
+C 50 -300 30 0 1 0 F
+C 50 -100 30 0 1 0 F
+C 50 100 30 0 1 0 F
+C 50 300 30 0 1 0 F
+T 0 175 -100 60 0 0 0 +5v Normal 0 L C
+T 0 175 -200 60 0 0 0 Down Normal 0 L C
+T 0 175 -300 60 0 0 0 Fire Normal 0 L C
+T 0 175 100 60 0 0 0 Ground Normal 0 L C
+T 0 175 0 60 0 0 0 Left Normal 0 L C
+T 0 175 300 60 0 0 0 "Paddle A" Normal 0 L C
+T 0 175 400 60 0 0 0 "Paddle B" Normal 0 L C
+T 0 175 200 60 0 0 0 Right Normal 0 L C
+T 0 175 -400 60 0 0 0 Up Normal 0 L C
+P 2 0 1 0 -150 -400 -100 -400 N
+P 2 0 1 0 -150 -300 20 -300 N
+P 2 0 1 0 -150 -200 -100 -200 N
+P 2 0 1 0 -150 -100 20 -100 N
+P 2 0 1 0 -150 0 -100 0 N
+P 2 0 1 0 -150 100 20 100 N
+P 2 0 1 0 -150 200 -100 200 N
+P 2 0 1 0 -150 300 20 300 N
+P 2 0 1 0 -150 400 -100 400 N
+P 5 0 1 10 -150 -525 -150 525 150 375 150 -375 -150 -525 f
+X 1 1 -300 -400 150 R 50 50 1 1 P
+X 2 2 -300 -200 150 R 50 50 1 1 P
+X 3 3 -300 0 150 R 50 50 1 1 P
+X 4 4 -300 200 150 R 50 50 1 1 P
+X 5 5 -300 400 150 R 50 50 1 1 P
+X 6 6 -300 -300 150 R 50 50 1 1 P
+X VCC 7 -300 -100 150 R 50 50 1 1 W
+X GND 8 -300 100 150 R 50 50 1 1 W
+X 9 9 -300 300 150 R 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# mounting_Mounting
+#
+DEF mounting_Mounting M 0 40 Y N 1 F N
+F0 "M" 0 100 50 H I C CNN
+F1 "mounting_Mounting" 0 -75 50 H I C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ Connector*:*_??x*mm*
+ Connector*:*1x??x*mm*
+ Pin?Header?Straight?1X*
+ Pin?Header?Angled?1X*
+ Socket?Strip?Straight?1X*
+ Socket?Strip?Angled?1X*
+$ENDFPLIST
+DRAW
+C 0 0 25 0 1 0 N
+C 0 0 50 0 1 0 N
+X Pin_1 1 -200 0 150 R 50 50 1 1 N N
+ENDDRAW
+ENDDEF
+#
+# power_GND
+#
+DEF power_GND #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -250 50 H I C CNN
+F1 "power_GND" 0 -150 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 6 0 1 0 0 0 0 -50 50 -50 0 -100 -50 -50 0 -50 N
+X GND 1 0 0 0 D 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# power_VCC
+#
+DEF power_VCC #PWR 0 0 Y Y 1 F P
+F0 "#PWR" 0 -150 50 H I C CNN
+F1 "power_VCC" 0 150 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+P 2 0 1 0 -30 50 0 100 N
+P 2 0 1 0 0 0 0 100 N
+P 2 0 1 0 0 100 30 50 N
+X VCC 1 0 0 0 U 50 50 1 1 W N
+ENDDRAW
+ENDDEF
+#
+# promicro_Arduino_Pro_Micro
+#
+DEF promicro_Arduino_Pro_Micro A 0 40 Y N 1 F N
+F0 "A" -275 400 50 H V C CNN
+F1 "promicro_Arduino_Pro_Micro" 0 -350 50 V V C CNN
+F2 "" -50 0 50 H I C CNN
+F3 "" -50 0 50 H I C CNN
+$FPLIST
+ Connector*:*2x??x*mm*
+ Connector*:*2x???Pitch*
+$ENDFPLIST
+DRAW
+T 0 325 -650 60 0 0 0 D14 Normal 0 R C
+T 0 325 -550 60 0 0 0 D15 Normal 0 R C
+T 0 325 -750 60 0 0 0 D16 Normal 0 R C
+T 0 325 -450 60 0 0 0 D18 Normal 0 R C
+T 0 325 -350 60 0 0 0 D19 Normal 0 R C
+T 0 -325 -150 60 0 0 0 D2 Normal 0 L C
+T 0 325 -250 60 0 0 0 D20 Normal 0 R C
+T 0 325 -150 60 0 0 0 D21 Normal 0 R C
+T 0 -325 -250 60 0 0 0 "D3~~" Normal 0 L C
+T 0 -325 -350 60 0 0 0 D4 Normal 0 L C
+T 0 -325 -450 60 0 0 0 "D5~~" Normal 0 L C
+T 0 -325 -550 60 0 0 0 "D6~~" Normal 0 L C
+T 0 -325 -650 60 0 0 0 D7 Normal 0 L C
+T 0 -325 -750 60 0 0 0 D8 Normal 0 L C
+T 0 -325 -850 60 0 0 0 "D9~~" Normal 0 L C
+T 0 0 -900 60 0 0 0 GND Normal 0 C C
+T 0 325 250 60 0 0 0 RAW Normal 0 R C
+T 0 325 50 60 0 0 0 RST Normal 0 R C
+T 0 -325 150 60 0 0 0 RXI Normal 0 L C
+T 0 -325 250 60 0 0 0 TXO Normal 0 L C
+T 0 0 300 60 0 0 0 VCC Normal 0 C C
+T 0 325 -850 60 0 0 0 "~~D10" Normal 0 R C
+S -325 350 325 -950 0 0 0 f
+X TXO 1 -475 250 150 R 50 50 1 1 O
+X D7 10 -475 -650 150 R 50 50 1 1 B
+X D8 11 -475 -750 150 R 50 50 1 1 B
+X D9 12 -475 -850 150 R 50 50 1 1 B
+X D10 13 475 -850 150 L 50 50 1 1 B
+X D16 14 475 -750 150 L 50 50 1 1 B
+X D14 15 475 -650 150 L 50 50 1 1 B
+X D15 16 475 -550 150 L 50 50 1 1 B
+X D18 17 475 -450 150 L 50 50 1 1 B
+X D19 18 475 -350 150 L 50 50 1 1 B
+X D20 19 475 -250 150 L 50 50 1 1 B
+X RXI 2 -475 150 150 R 50 50 1 1 I
+X D21 20 475 -150 150 L 50 50 1 1 B
+X VCC 21 0 500 150 D 50 50 1 1 w
+X RST 22 475 50 150 L 50 50 1 1 I
+X GND 23 100 -1100 150 U 50 50 1 1 P
+X RAW 24 475 250 150 L 50 50 1 1 W
+X GND 3 -100 -1100 150 U 50 50 1 1 w
+X GND 4 0 -1100 150 U 50 50 1 1 P
+X D2 5 -475 -150 150 R 50 50 1 1 B
+X D3 6 -475 -250 150 R 50 50 1 1 B
+X D4 7 -475 -350 150 R 50 50 1 1 B
+X D5 8 -475 -450 150 R 50 50 1 1 B
+X D6 9 -475 -550 150 R 50 50 1 1 B
+ENDDRAW
+ENDDEF
+#
+#End Library

@@ -1,0 +1,5 @@
+(fp_lib_table
+  (lib (name RND)(type KiCad)(uri $KIPRJMOD/../common/modules/RND_DSUB.pretty)(options "")(descr ""))
+  (lib (name IDC_Joystick)(type KiCad)(uri $KIPRJMOD/../common/modules/IDC_Joystick.pretty)(options "")(descr ""))
+  (lib (name mounting)(type KiCad)(uri $KIPRJMOD/../common/modules/mounting.pretty)(options "")(descr ""))
+)
