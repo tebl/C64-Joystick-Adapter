@@ -4,35 +4,35 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title "CPC464 Joystick splitter"
+Title "C64 Joystick Adapter"
 Date ""
 Rev "A"
 Comp ""
 Comment1 ""
 Comment2 ""
-Comment3 "that of the Sega Master System gamepad. No real GND and VCC, so no autofire support."
-Comment4 "Passive joystick splitter for use with Atari-style joysticks. Dual button support matches"
+Comment3 ""
+Comment4 "Allows the connection of C64 controllers to modern PC over USB."
 $EndDescr
 $Comp
 L atari_joystick:Atari_Joystick J2
 U 1 1 5FFBB4AE
-P 3750 3525
-F 0 "J2" H 4344 3571 50  0000 L CNN
-F 1 "Port 2" H 4344 3480 50  0000 L CNN
-F 2 "RND:DSUB-9_Male_Horizontal_P2.77x2.84mm_EdgePinOffset7.70mm_Housed_MountingHolesOffset9.12mm" H 3750 3525 50  0001 C CNN
-F 3 "" H 3750 3525 50  0001 C CNN
-	1    3750 3525
+P 1800 3500
+F 0 "J2" H 2394 3546 50  0000 L CNN
+F 1 "Port 2" H 2394 3455 50  0000 L CNN
+F 2 "RND:DSUB-9_Male_Horizontal_P2.77x2.84mm_EdgePinOffset7.70mm_Housed_MountingHolesOffset9.12mm" H 1800 3500 50  0001 C CNN
+F 3 "" H 1800 3500 50  0001 C CNN
+	1    1800 3500
 	-1   0    0    -1  
 $EndComp
 $Comp
 L atari_joystick:Atari_Joystick J1
 U 1 1 5FFBE15A
-P 3750 5225
-F 0 "J1" H 4344 5271 50  0000 L CNN
-F 1 "Port 1" H 4344 5180 50  0000 L CNN
-F 2 "RND:DSUB-9_Male_Horizontal_P2.77x2.84mm_EdgePinOffset7.70mm_Housed_MountingHolesOffset9.12mm" H 3750 5225 50  0001 C CNN
-F 3 "" H 3750 5225 50  0001 C CNN
-	1    3750 5225
+P 1800 5200
+F 0 "J1" H 2394 5246 50  0000 L CNN
+F 1 "Port 1" H 2394 5155 50  0000 L CNN
+F 2 "RND:DSUB-9_Male_Horizontal_P2.77x2.84mm_EdgePinOffset7.70mm_Housed_MountingHolesOffset9.12mm" H 1800 5200 50  0001 C CNN
+F 3 "" H 1800 5200 50  0001 C CNN
+	1    1800 5200
 	-1   0    0    -1  
 $EndComp
 $Comp
@@ -80,34 +80,12 @@ F 3 "~" H 11150 550 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L mounting:Mounting M5
-U 1 1 60066A2A
-P 10525 550
-F 0 "M5" H 10525 650 50  0001 C CNN
-F 1 "Mounting" H 10525 475 50  0001 C CNN
-F 2 "mounting:M3_pin" H 10525 550 50  0001 C CNN
-F 3 "~" H 10525 550 50  0001 C CNN
-	1    10525 550 
-	1    0    0    -1  
-$EndComp
-$Comp
-L mounting:Mounting M6
-U 1 1 60066A30
-P 10650 550
-F 0 "M6" H 10650 650 50  0001 C CNN
-F 1 "Mounting" H 10650 475 50  0001 C CNN
-F 2 "mounting:M3_pin" H 10650 550 50  0001 C CNN
-F 3 "~" H 10650 550 50  0001 C CNN
-	1    10650 550 
-	1    0    0    -1  
-$EndComp
-$Comp
 L Switch:SW_Push SW1
 U 1 1 5FBBF92E
 P 9075 3725
 F 0 "SW1" H 8875 3775 50  0000 C CNN
 F 1 "RESET" H 9075 3650 50  0000 C CNN
-F 2 "Buttons_Switches_THT:SW_PUSH_6mm" H 9075 3925 50  0001 C CNN
+F 2 "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx39-2LFS" H 9075 3925 50  0001 C CNN
 F 3 "~" H 9075 3925 50  0001 C CNN
 	1    9075 3725
 	1    0    0    -1  
@@ -154,7 +132,7 @@ U 1 1 5FBD6E88
 P 9075 4800
 F 0 "D1" H 9075 4700 50  0000 C CNN
 F 1 "PWR" H 9075 4900 50  0000 C CNN
-F 2 "LEDs:LED_D5.0mm" H 9075 4800 50  0001 C CNN
+F 2 "LED_THT:LED_D5.0mm_Clear" H 9075 4800 50  0001 C CNN
 F 3 "~" H 9075 4800 50  0001 C CNN
 	1    9075 4800
 	-1   0    0    1   
@@ -164,7 +142,7 @@ Wire Wire Line
 Wire Wire Line
 	8850 4800 8925 4800
 $Comp
-L promicro:Arduino_Pro_Micro A1
+L arduino_pro_micro:Arduino_Pro_Micro A1
 U 1 1 5FBBE539
 P 7850 3775
 F 0 "A1" H 7575 4175 50  0000 C CNN
@@ -180,18 +158,18 @@ U 1 1 60015843
 P 9075 4525
 F 0 "SW2" H 8875 4575 50  0000 C CNN
 F 1 "MODE" H 9075 4450 50  0000 C CNN
-F 2 "Buttons_Switches_THT:SW_PUSH_6mm" H 9075 4725 50  0001 C CNN
+F 2 "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx39-2LFS" H 9075 4725 50  0001 C CNN
 F 3 "~" H 9075 4725 50  0001 C CNN
 	1    9075 4525
 	1    0    0    -1  
 $EndComp
-Text GLabel 5150 2875 2    50   Output ~ 0
+Text GLabel 3200 2850 2    50   Output ~ 0
 POT_BY
-Text GLabel 5150 2975 2    50   Output ~ 0
+Text GLabel 3200 2950 2    50   Output ~ 0
 POT_BX
-Text GLabel 5150 4575 2    50   Output ~ 0
+Text GLabel 3200 4550 2    50   Output ~ 0
 POT_AY
-Text GLabel 5150 4675 2    50   Output ~ 0
+Text GLabel 3200 4650 2    50   Output ~ 0
 POT_AX
 Text GLabel 8400 4125 2    50   Input ~ 0
 POT_AY
@@ -213,35 +191,35 @@ Wire Wire Line
 	8325 4625 8500 4625
 Wire Wire Line
 	8500 4625 8500 4800
-Text GLabel 4050 3325 2    50   Output ~ 0
+Text GLabel 2100 3300 2    50   Output ~ 0
 P2_RIGHT
-Text GLabel 4050 3525 2    50   Output ~ 0
+Text GLabel 2100 3500 2    50   Output ~ 0
 P2_LEFT
-Text GLabel 4050 3725 2    50   Output ~ 0
+Text GLabel 2100 3700 2    50   Output ~ 0
 P2_DOWN
-Text GLabel 4050 3825 2    50   Output ~ 0
+Text GLabel 2100 3800 2    50   Output ~ 0
 P2_FIRE
-Text GLabel 4050 3925 2    50   Output ~ 0
+Text GLabel 2100 3900 2    50   Output ~ 0
 P2_UP
-Text GLabel 4050 5025 2    50   Output ~ 0
+Text GLabel 2100 5000 2    50   Output ~ 0
 P1_RIGHT
-Text GLabel 4050 5225 2    50   Output ~ 0
+Text GLabel 2100 5200 2    50   Output ~ 0
 P1_LEFT
-Text GLabel 4050 5425 2    50   Output ~ 0
+Text GLabel 2100 5400 2    50   Output ~ 0
 P1_DOWN
-Text GLabel 4050 5525 2    50   Output ~ 0
+Text GLabel 2100 5500 2    50   Output ~ 0
 P1_FIRE
-Text GLabel 4050 5625 2    50   Output ~ 0
+Text GLabel 2100 5600 2    50   Output ~ 0
 P1_UP
 $Comp
 L Device:R_Small R1
 U 1 1 6002419F
-P 4775 3125
-F 0 "R1" V 4725 2925 50  0000 L CNN
-F 1 "220K" V 4725 3225 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 4775 3125 50  0001 C CNN
-F 3 "~" H 4775 3125 50  0001 C CNN
-	1    4775 3125
+P 2825 3100
+F 0 "R1" V 2775 2900 50  0000 L CNN
+F 1 "220K" V 2775 3200 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 2825 3100 50  0001 C CNN
+F 3 "~" H 2825 3100 50  0001 C CNN
+	1    2825 3100
 	0    1    1    0   
 $EndComp
 $Comp
@@ -258,155 +236,155 @@ $EndComp
 $Comp
 L Device:R_Small R2
 U 1 1 600255F0
-P 4775 3225
-F 0 "R2" V 4725 3025 50  0000 L CNN
-F 1 "220K" V 4725 3325 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 4775 3225 50  0001 C CNN
-F 3 "~" H 4775 3225 50  0001 C CNN
-	1    4775 3225
+P 2825 3200
+F 0 "R2" V 2775 3000 50  0000 L CNN
+F 1 "220K" V 2775 3300 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 2825 3200 50  0001 C CNN
+F 3 "~" H 2825 3200 50  0001 C CNN
+	1    2825 3200
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	4050 3125 4400 3125
+	2100 3100 2450 3100
 Wire Wire Line
-	4050 3225 4475 3225
+	2100 3200 2525 3200
 Wire Wire Line
-	4875 3125 5150 3125
+	2925 3100 3200 3100
 Wire Wire Line
-	5150 3125 5150 3225
+	3200 3100 3200 3200
 Wire Wire Line
-	5150 3425 4050 3425
+	3200 3400 2100 3400
 Wire Wire Line
-	4875 3225 5150 3225
-Connection ~ 5150 3225
+	2925 3200 3200 3200
+Connection ~ 3200 3200
 Wire Wire Line
-	5150 3225 5150 3425
+	3200 3200 3200 3400
 Wire Wire Line
-	4475 2975 4475 3225
-Connection ~ 4475 3225
+	2525 2950 2525 3200
+Connection ~ 2525 3200
 Wire Wire Line
-	4475 3225 4675 3225
+	2525 3200 2725 3200
 Wire Wire Line
-	4400 2875 4400 3125
-Connection ~ 4400 3125
+	2450 2850 2450 3100
+Connection ~ 2450 3100
 Wire Wire Line
-	4400 3125 4675 3125
+	2450 3100 2725 3100
 Wire Wire Line
-	4475 2975 5150 2975
+	2525 2950 3200 2950
 Wire Wire Line
-	4400 2875 5150 2875
+	2450 2850 3200 2850
 $Comp
 L Device:R_Small R3
 U 1 1 60034C97
-P 4775 4825
-F 0 "R3" V 4725 4625 50  0000 L CNN
-F 1 "220K" V 4725 4925 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 4775 4825 50  0001 C CNN
-F 3 "~" H 4775 4825 50  0001 C CNN
-	1    4775 4825
+P 2825 4800
+F 0 "R3" V 2775 4600 50  0000 L CNN
+F 1 "220K" V 2775 4900 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 2825 4800 50  0001 C CNN
+F 3 "~" H 2825 4800 50  0001 C CNN
+	1    2825 4800
 	0    1    1    0   
 $EndComp
 $Comp
 L Device:R_Small R4
 U 1 1 60034C9D
-P 4775 4925
-F 0 "R4" V 4725 4725 50  0000 L CNN
-F 1 "220K" V 4725 5025 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 4775 4925 50  0001 C CNN
-F 3 "~" H 4775 4925 50  0001 C CNN
-	1    4775 4925
+P 2825 4900
+F 0 "R4" V 2775 4700 50  0000 L CNN
+F 1 "220K" V 2775 5000 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 2825 4900 50  0001 C CNN
+F 3 "~" H 2825 4900 50  0001 C CNN
+	1    2825 4900
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	4050 4825 4400 4825
+	2100 4800 2450 4800
 Wire Wire Line
-	4050 4925 4475 4925
+	2100 4900 2525 4900
 Wire Wire Line
-	4875 4825 5150 4825
+	2925 4800 3200 4800
 Wire Wire Line
-	5150 4825 5150 4925
+	3200 4800 3200 4900
 Wire Wire Line
-	5150 5125 4050 5125
+	3200 5100 2100 5100
 Wire Wire Line
-	4875 4925 5150 4925
-Connection ~ 5150 4925
+	2925 4900 3200 4900
+Connection ~ 3200 4900
 Wire Wire Line
-	5150 4925 5150 5125
+	3200 4900 3200 5100
 $Comp
 L power:GND #PWR0101
 U 1 1 60034CAB
-P 5300 4925
-F 0 "#PWR0101" H 5300 4675 50  0001 C CNN
-F 1 "GND" H 5305 4752 50  0000 C CNN
-F 2 "" H 5300 4925 50  0001 C CNN
-F 3 "" H 5300 4925 50  0001 C CNN
-	1    5300 4925
+P 3350 4900
+F 0 "#PWR0101" H 3350 4650 50  0001 C CNN
+F 1 "GND" H 3355 4727 50  0000 C CNN
+F 2 "" H 3350 4900 50  0001 C CNN
+F 3 "" H 3350 4900 50  0001 C CNN
+	1    3350 4900
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	4475 4675 4475 4925
-Connection ~ 4475 4925
+	2525 4650 2525 4900
+Connection ~ 2525 4900
 Wire Wire Line
-	4475 4925 4675 4925
+	2525 4900 2725 4900
 Wire Wire Line
-	4400 4575 4400 4825
-Connection ~ 4400 4825
+	2450 4550 2450 4800
+Connection ~ 2450 4800
 Wire Wire Line
-	4400 4825 4675 4825
+	2450 4800 2725 4800
 Wire Wire Line
-	4475 4675 5150 4675
+	2525 4650 3200 4650
 Wire Wire Line
-	4400 4575 5150 4575
+	2450 4550 3200 4550
 Wire Wire Line
-	5300 4925 5300 4825
+	3350 4900 3350 4800
 Wire Wire Line
-	5300 4825 5150 4825
-Connection ~ 5150 4825
+	3350 4800 3200 4800
+Connection ~ 3200 4800
 $Comp
 L power:GND #PWR0104
 U 1 1 6004171F
-P 5300 3225
-F 0 "#PWR0104" H 5300 2975 50  0001 C CNN
-F 1 "GND" H 5305 3052 50  0000 C CNN
-F 2 "" H 5300 3225 50  0001 C CNN
-F 3 "" H 5300 3225 50  0001 C CNN
-	1    5300 3225
+P 3350 3200
+F 0 "#PWR0104" H 3350 2950 50  0001 C CNN
+F 1 "GND" H 3355 3027 50  0000 C CNN
+F 2 "" H 3350 3200 50  0001 C CNN
+F 3 "" H 3350 3200 50  0001 C CNN
+	1    3350 3200
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5300 3225 5300 3125
+	3350 3200 3350 3100
 Wire Wire Line
-	5300 3125 5150 3125
+	3350 3100 3200 3100
 $Comp
 L power:VCC #PWR0105
 U 1 1 600446E1
-P 5475 3325
-F 0 "#PWR0105" H 5475 3175 50  0001 C CNN
-F 1 "VCC" H 5492 3498 50  0000 C CNN
-F 2 "" H 5475 3325 50  0001 C CNN
-F 3 "" H 5475 3325 50  0001 C CNN
-	1    5475 3325
+P 3525 3300
+F 0 "#PWR0105" H 3525 3150 50  0001 C CNN
+F 1 "VCC" H 3542 3473 50  0000 C CNN
+F 2 "" H 3525 3300 50  0001 C CNN
+F 3 "" H 3525 3300 50  0001 C CNN
+	1    3525 3300
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5475 3325 5475 3625
+	3525 3300 3525 3600
 Wire Wire Line
-	5475 3625 4050 3625
+	3525 3600 2100 3600
 $Comp
 L power:VCC #PWR0106
 U 1 1 6004724E
-P 5475 5025
-F 0 "#PWR0106" H 5475 4875 50  0001 C CNN
-F 1 "VCC" H 5492 5198 50  0000 C CNN
-F 2 "" H 5475 5025 50  0001 C CNN
-F 3 "" H 5475 5025 50  0001 C CNN
-	1    5475 5025
+P 3525 5000
+F 0 "#PWR0106" H 3525 4850 50  0001 C CNN
+F 1 "VCC" H 3542 5173 50  0000 C CNN
+F 2 "" H 3525 5000 50  0001 C CNN
+F 3 "" H 3525 5000 50  0001 C CNN
+	1    3525 5000
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	5475 5025 5475 5325
+	3525 5000 3525 5300
 Wire Wire Line
-	5475 5325 4050 5325
+	3525 5300 2100 5300
 Text GLabel 7300 4625 0    50   Input ~ 0
 P2_RIGHT
 Text GLabel 7300 4525 0    50   Input ~ 0
@@ -466,10 +444,10 @@ Wire Wire Line
 Wire Wire Line
 	9450 4800 9450 5025
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0107
 U 1 1 60098DD9
 P 7950 5025
-F 0 "#PWR?" H 7950 4775 50  0001 C CNN
+F 0 "#PWR0107" H 7950 4775 50  0001 C CNN
 F 1 "GND" H 7955 4852 50  0000 C CNN
 F 2 "" H 7950 5025 50  0001 C CNN
 F 3 "" H 7950 5025 50  0001 C CNN
@@ -479,4 +457,70 @@ $EndComp
 Connection ~ 7950 4950
 Wire Wire Line
 	7950 4950 7950 5025
+$Comp
+L c64_idc:C64_IDC2_OUT J3
+U 1 1 5FFF3ACE
+P 2350 1800
+F 0 "J3" H 2362 2215 50  0000 C CNN
+F 1 "C64 JoyKEY" H 2362 2124 50  0000 C CNN
+F 2 "C64_IDC:IDC_Joystick" H 2350 1800 50  0001 C CNN
+F 3 "~" H 2350 1800 50  0001 C CNN
+	1    2350 1800
+	1    0    0    -1  
+$EndComp
+Connection ~ 3200 3100
+Text GLabel 1825 1900 0    50   Input ~ 0
+P2_RIGHT
+Text GLabel 1825 1800 0    50   Input ~ 0
+P2_LEFT
+Text GLabel 1825 1700 0    50   Input ~ 0
+P2_DOWN
+Text GLabel 1825 1600 0    50   Input ~ 0
+P2_UP
+Text GLabel 2825 1600 2    50   Input ~ 0
+P2_FIRE
+$Comp
+L power:GND #PWR0108
+U 1 1 60007377
+P 3275 1875
+F 0 "#PWR0108" H 3275 1625 50  0001 C CNN
+F 1 "GND" H 3280 1702 50  0000 C CNN
+F 2 "" H 3275 1875 50  0001 C CNN
+F 3 "" H 3275 1875 50  0001 C CNN
+	1    3275 1875
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:VCC #PWR0109
+U 1 1 6000737E
+P 3275 1625
+F 0 "#PWR0109" H 3275 1475 50  0001 C CNN
+F 1 "VCC" H 3292 1798 50  0000 C CNN
+F 2 "" H 3275 1625 50  0001 C CNN
+F 3 "" H 3275 1625 50  0001 C CNN
+	1    3275 1625
+	1    0    0    -1  
+$EndComp
+Text GLabel 2825 1900 2    50   Input ~ 0
+POT_BY
+Text GLabel 1825 2000 0    50   Input ~ 0
+POT_BY
+Wire Wire Line
+	1825 1600 1900 1600
+Wire Wire Line
+	1900 1700 1825 1700
+Wire Wire Line
+	1825 1800 1900 1800
+Wire Wire Line
+	1900 1900 1825 1900
+Wire Wire Line
+	1825 2000 1900 2000
+Wire Wire Line
+	3275 1625 3275 1700
+Wire Wire Line
+	3275 1700 2825 1700
+Wire Wire Line
+	2825 1800 3275 1800
+Wire Wire Line
+	3275 1800 3275 1875
 $EndSCHEMATC
