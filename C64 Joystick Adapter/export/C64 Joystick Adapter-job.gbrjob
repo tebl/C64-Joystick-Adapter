@@ -7,14 +7,14 @@
       "Application": "Pcbnew",
       "Version":     "(5.1.8)-1"
     },
-    "CreationDate":  "2021-01-12T21:36:03+01:00"
+    "CreationDate":  "2021-01-12T21:41:51+01:00"
   },
   "GeneralSpecs":
   {
     "ProjectId":
     {
-      "Name": "C64 JoyAdapter",
-      "GUID": "43363420-4a6f-4794-9164-61707465722e",
+      "Name": "C64 Joystick Adapter",
+      "GUID": "43363420-4a6f-4797-9374-69636b204164",
       "Revision": "rev?"
     },
     "Size":
@@ -40,47 +40,47 @@
   "FilesAttributes":
   [
     {
-      "Path":  "C64 JoyAdapter-F_Cu.gtl",
+      "Path":  "C64 Joystick Adapter-F_Cu.gtl",
       "FileFunction":  "Copper,L1,Top",
       "FilePolarity":  "Positive"
     },
     {
-      "Path":  "C64 JoyAdapter-B_Cu.gbl",
+      "Path":  "C64 Joystick Adapter-B_Cu.gbl",
       "FileFunction":  "Copper,L2,Bot",
       "FilePolarity":  "Positive"
     },
     {
-      "Path":  "C64 JoyAdapter-F_Paste.gtp",
+      "Path":  "C64 Joystick Adapter-F_Paste.gtp",
       "FileFunction":  "SolderPaste,Top",
       "FilePolarity":  "Positive"
     },
     {
-      "Path":  "C64 JoyAdapter-B_Paste.gbp",
+      "Path":  "C64 Joystick Adapter-B_Paste.gbp",
       "FileFunction":  "SolderPaste,Bot",
       "FilePolarity":  "Positive"
     },
     {
-      "Path":  "C64 JoyAdapter-F_SilkS.gto",
+      "Path":  "C64 Joystick Adapter-F_SilkS.gto",
       "FileFunction":  "Legend,Top",
       "FilePolarity":  "Positive"
     },
     {
-      "Path":  "C64 JoyAdapter-B_SilkS.gbo",
+      "Path":  "C64 Joystick Adapter-B_SilkS.gbo",
       "FileFunction":  "Legend,Bot",
       "FilePolarity":  "Positive"
     },
     {
-      "Path":  "C64 JoyAdapter-F_Mask.gts",
+      "Path":  "C64 Joystick Adapter-F_Mask.gts",
       "FileFunction":  "SolderMask,Top",
       "FilePolarity":  "Negative"
     },
     {
-      "Path":  "C64 JoyAdapter-B_Mask.gbs",
+      "Path":  "C64 Joystick Adapter-B_Mask.gbs",
       "FileFunction":  "SolderMask,Bot",
       "FilePolarity":  "Negative"
     },
     {
-      "Path":  "C64 JoyAdapter-Edge_Cuts.gm1",
+      "Path":  "C64 Joystick Adapter-Edge_Cuts.gm1",
       "FileFunction":  "Profile",
       "FilePolarity":  "Positive"
     }

@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,(5.1.8)-1*%
-%TF.CreationDate,2021-01-12T21:36:03+01:00*%
-%TF.ProjectId,C64 JoyAdapter,43363420-4a6f-4794-9164-61707465722e,rev?*%
+%TF.CreationDate,2021-01-12T21:41:51+01:00*%
+%TF.ProjectId,C64 Joystick Adapter,43363420-4a6f-4797-9374-69636b204164,rev?*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Soldermask,Bot*%
 %TF.FilePolarity,Negative*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW (5.1.8)-1) date 2021-01-12 21:36:03*
+G04 Created by KiCad (PCBNEW (5.1.8)-1) date 2021-01-12 21:41:51*
 %MOMM*%
 %LPD*%
 G01*
