@@ -37,6 +37,7 @@ Joystick_ Joystick[PORT_COUNT] = {
 };
 
 void init_mode_default() {
+  flash_pwr(3);
   set_pwr(true);
   pwr_timer = millis() + LED_SHUTOFF;
 
@@ -80,6 +81,7 @@ void debounce_joystick_key(const int port_id, const byte key_id) {
           key_state[port_id][key_id] = KEY_STATE_WAIT_RELEASE;
           #ifdef PWR_ACTIVITY
           boost_pwr();
+          pwr_timer = millis() + LED_FADE_SPEED;
           #endif
           return;
         }
@@ -128,7 +130,11 @@ void update_port(const int port_id) {
 
 void handle_mode_default() {
   if (millis() > pwr_timer) {
-    fade_pwr();
+    #ifdef PWR_ACTIVITY_MIN
+      fade_pwr(PWR_ACTIVITY_MIN);
+    #else
+      fade_pwr();
+    #endif
     pwr_timer = millis() + LED_FADE_SPEED;
   }
 

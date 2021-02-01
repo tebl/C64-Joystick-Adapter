@@ -6,9 +6,9 @@
 #define APP_TITLE "JoyKEY JoyConverter"
 #define APP_VERSION "0.1"
 
-#define LED_PWR_MAX 56                // Maximum brightness
+#define LED_PWR_MAX 128               // Maximum brightness
 #define LED_SHUTOFF 5000              // Time after boot when fade starts
-#define LED_FADE_SPEED 200            // Delay between LED fade steps
+#define LED_FADE_SPEED 500            // Delay between LED fade steps
 #define LED_STEP 8                    // Change per step when fading
 #define LED_FLASH_DELAY 100           // Delay between blink steps
 #define BOOT_MODE_THRESHOLD 1000      // Time needed before alternate mode
@@ -18,6 +18,8 @@
  * it'll grow brighter with movement and fade over time.
  */
 #define PWR_ACTIVITY
+#define PWR_ACTIVITY_MIN 8            // Defines a minimum activity LED level,
+                                      // uncomment to allow fading out completely.
 
 /* Specifies the minimum hold time of the magic key-combination to enable
  * alternate mode. BOOT_DELAY specifies the length of the pause given the

@@ -71,6 +71,7 @@ bool is_pwr_on() { return is_led_on(LED_INDEX_PWR); }
 void set_pwr(int value) { set_led(LED_INDEX_PWR, value); }
 void set_pwr(bool value) { set_led(LED_INDEX_PWR, value); }
 void fade_pwr() { fade_led(LED_INDEX_PWR, LED_STEP); }
+void fade_pwr(const int minimum) { fade_led(LED_INDEX_PWR, minimum, LED_STEP); }
 void boost_pwr() { boost_led(LED_INDEX_PWR, LED_STEP); }
 void flash_pwr(int num_flashes) { flash_led(LED_INDEX_PWR, num_flashes); }
 
