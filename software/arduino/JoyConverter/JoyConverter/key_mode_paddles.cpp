@@ -35,8 +35,8 @@ void init_mode_paddles() {
 
   /* Initialize port */
   for (int index = 0; index < PORT_COUNT; index++) {
-    Joystick[index].setXAxisRange(200, 1000);
-    Joystick[index].setYAxisRange(200, 1000);
+    Joystick[index].setXAxisRange(PADDLE_VALUE_MIN, PADDLE_VALUE_MAX);
+    Joystick[index].setYAxisRange(PADDLE_VALUE_MIN, PADDLE_VALUE_MAX);
     Joystick[index].begin(false);
   }
 }
@@ -88,6 +88,10 @@ void update_axis(const int port_id, const int axis) {
     /* Read actual value, discard if not changed enough (jitter reduction) */
     int value = analogRead(pin_number);
     if (get_distance(value, paddle_value[port_id][axis]) > PADDLE_MIN_CHANGE) {
+      #ifdef PWR_ACTIVITY
+        set_pwr((int) map(value, PADDLE_VALUE_MIN, PADDLE_VALUE_MAX, 0, LED_PWR_MAX));
+        pwr_timer = millis() + LED_SHUTOFF;
+      #endif
       paddle_value[port_id][axis] = value;
     }
     paddle_timer[port_id][axis] = millis() + PADDLE_SAMPLE_RATE;
@@ -98,8 +102,6 @@ void update_axis(const int port_id, const int axis) {
  * jitter and then make sure updates are sent to the computer.
  */
 void update_paddle(const int port_id) {
-  debounce_joystick_key(PORT_1, KEY_MODE);
-
   update_axis(port_id, AXIS_X);
   debounce_joystick_key(port_id, KEY_LEFT);
 
@@ -115,6 +117,7 @@ void handle_mode_paddles() {
     pwr_timer = millis() + LED_FADE_SPEED;
   }
 
+  debounce_joystick_key(PORT_1, KEY_MODE);
   for (int port_id = PORT_1; port_id < PORT_COUNT; port_id++) {
     update_paddle(port_id);
   }  

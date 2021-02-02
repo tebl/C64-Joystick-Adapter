@@ -19,6 +19,8 @@
    PADDLE_SAMPLE_RATE is a timer deciding how often we'll attempt to read the
    values.
 */
+#define PADDLE_VALUE_MIN 200
+#define PADDLE_VALUE_MAX 1000
 #define PADDLE_SAMPLE_DELAY 10        // First read is discarded, time to settle.
 #define PADDLE_SAMPLE_RATE 50         // Ideal time to wait between updates
 #define PADDLE_MIN_CHANGE 40          // Increase to decrease resolution,
