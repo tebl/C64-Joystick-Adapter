@@ -6,9 +6,11 @@
 #include "key_mode_paddles.h"
 #include "led_control.h"
 
-unsigned long pwr_timer;
 extern bool boot_done;
+
+unsigned long pwr_timer;
 int joykey_mode = KEY_MODE_DEFAULT;
+bool swap_ports = false;
 
 unsigned long key_debounce[PORT_COUNT][KEY_COUNT];
 byte key_state[PORT_COUNT][KEY_COUNT];
@@ -33,10 +35,6 @@ Joystick_ Joystick[PORT_COUNT] = {
     false, false, false   // No accelerator, brake, or steering
   )
 };
-
-bool is_waiting_release(const int port_id, const byte key_id) {
-  return key_state[port_id][key_id] == KEY_STATE_WAIT_RELEASE;
-}
 
 bool init_mode(byte mode) {
   joykey_mode = mode;
@@ -78,20 +76,29 @@ void handle_mode() {
  * worth keeping in order to avoid jittery joystick responses.
  */
 void debounce_joystick_key(const int port_id, const byte key_id) {
-  if (digitalRead(KEY_PINS[port_id][key_id]) == LOW) {
+  int current_port = port_id;
+  if (swap_ports) current_port = (port_id == PORT_1 ? PORT_2 : PORT_1);
+
+  if (digitalRead(KEY_PINS[current_port][key_id]) == LOW) {
     switch (key_state[port_id][key_id]) {
       case KEY_STATE_NEUTRAL:
-        if(key_debounce[port_id][key_id] == 0) {
+        if (key_debounce[port_id][key_id] == 0) {
           key_debounce[port_id][key_id] = millis() + DEBOUNCE_DELAY;
           return;
         }
 
         if (millis() > key_debounce[port_id][key_id]) {
           key_state[port_id][key_id] = KEY_STATE_WAIT_RELEASE;
-          #ifdef PWR_ACTIVITY
-          boost_pwr();
-          pwr_timer = millis() + LED_FADE_SPEED;
-          #endif
+
+          if (key_id == KEY_MODE) {
+            flash_pwr(3);
+            swap_ports = !swap_ports;
+          } else {
+            #ifdef PWR_ACTIVITY
+              boost_pwr();
+              pwr_timer = millis() + LED_FADE_SPEED;
+            #endif
+          }
           return;
         }
         break;
@@ -105,4 +112,12 @@ void debounce_joystick_key(const int port_id, const byte key_id) {
     key_debounce[port_id][key_id] = 0;
     key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
   }
+}
+
+/* Check if the specified key has been registered, and we're waiting for the
+ * key to be released (this means debouncing has already been performed by
+ * debounce_joystick_key).
+ */
+bool is_waiting_release(const int port_id, const byte key_id) {
+  return key_state[port_id][key_id] == KEY_STATE_WAIT_RELEASE;
 }

@@ -15,10 +15,13 @@ extern unsigned long pwr_timer;
 extern unsigned long key_debounce[PORT_COUNT][KEY_COUNT];
 extern byte key_state[PORT_COUNT][KEY_COUNT];
 extern Joystick_ Joystick[PORT_COUNT];
+extern bool swap_ports;
 
 void init_mode_default() {
   set_pwr(true);
   pwr_timer = millis() + LED_SHUTOFF;
+
+  pinMode(PIN_MODE, INPUT_PULLUP);
 
   pinMode(PIN_P1_UP, INPUT_PULLUP);
   pinMode(PIN_P1_DOWN, INPUT_PULLUP);
@@ -66,8 +69,9 @@ void update_joystick(const int port_id) {
 void update_port(const int port_id) {
   for (int key_id = 0; key_id < KEY_COUNT; key_id++) {
     debounce_joystick_key(port_id, key_id);
-    update_joystick(port_id);
   }
+
+  update_joystick(port_id);
 }
 
 void handle_mode_default() {

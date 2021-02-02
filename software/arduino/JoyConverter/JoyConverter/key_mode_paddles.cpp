@@ -15,6 +15,7 @@ extern unsigned long pwr_timer;
 extern unsigned long key_debounce[PORT_COUNT][KEY_COUNT];
 extern byte key_state[PORT_COUNT][KEY_COUNT];
 extern Joystick_ Joystick[PORT_COUNT];
+extern bool swap_ports;
 
 unsigned long paddle_timer[PORT_COUNT][2];
 int paddle_value[PORT_COUNT][2];
@@ -58,7 +59,7 @@ void send_paddle_status(const int port_id) {
 
 /* Get the analog input pin associated with the specified port and axis. */
 int get_axis_pin(const int port_id, const int axis) {
-  if (port_id == PORT_1) {
+  if (port_id == (swap_ports ? PORT_2 : PORT_1)) {
     if (axis == AXIS_X) return PIN_POT_AX;
     return PIN_POT_AY;
   } else {
