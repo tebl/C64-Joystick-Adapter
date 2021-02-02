@@ -7,6 +7,10 @@ It is only meant as a fun little project, but if you need one and would like to 
 
 ![System picture](https://github.com/tebl/C64-Joystick-Adapter/raw/main/gallery/system.jpg)
 
+The firmware also supports paddles, these are mapped to the X and Y position in addition to registering a fire button for each of them (this is because a single port can hold two paddles, so with two ports we could potentially have up to four paddles). This is the mode mentioned in **settings.h**, you can enter paddle mode by holding down the mode button when powering on the unit (hold it down until the LED blinks).
+
+One rather irritating problem with the C64 was that various games expected that your joystick is inserted into different joystick ports, on this adapter this have been solved in software - pressing the **mode** button will effectively swap the active port. It was irritating enough on the physical machine as well, so that bit has been perfectly emulated (on a physical Commodore 64, a different solution is the [C64 Joystick Switcher](https://github.com/tebl/C64-Joystick-Switcher)).
+
 # 1> Building the adapter
 I'm not going to go into great detail on this point as there is not much that can go wrong when soldering together this unit, just ensure that you have tools of at least moderate quality and you should not have much problems with it. That usually means a temperature-controlled soldering iron, some solder that isn't the kind used to weld pipes (the electronics version) and a table that isn't considered flamable. First things first though, is actually getting the parts - check the [BOM](#2-bom)-section below for a complete list. 
 
@@ -48,4 +52,6 @@ If you want to build a C64 Joystick Adapter that converts standard Atari-style j
 | J1,J2                | Female DB9 right-angle connector                  |  1 (1)|        |
 | R1-R4                | 220k Ohm resistor                                 |    (4)|        |
 | R5                   | 330 Ohm resistor                                  |    (1)|        |
-| SW1,SW2              | 6x6x5mm right-angle momentary button              |    (2)|        |
+| SW1,SW2 *            | 6x6x5mm right-angle momentary button              |    (2)|        |
+
+*) If you don't encounter any problems flashing the firmware onto the Arduino Pro Micro, I recommend not soldering in the Arduino *reset* button so you're not accidentally pressing it when frantically looking for the mode button instead.
