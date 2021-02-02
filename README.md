@@ -28,6 +28,15 @@ Finally you'll need to ensure that you have the correct board type selected for 
 
 ![Board selection](https://github.com/tebl/C64-Joystick-Adapter/raw/main/software/arduino/JoyConverter/arduino_settings.png)
 
+# 1.3> Testing it out
+Actually testing it out in practice depends on the operating system running on the machine you're using it on, but if it's anything other than MS Windows 10 or Mac OS I'll just assume that you know what you're doing. Can't help you with the Mac OS unless someone gifts me a brand new Mac for this purpose, so for now - I'll just describe things from a Windows-based perspective.
+
+The operating system (*Windows* was the assumption if you're still here) will see the adapter as two separate joysticks, no matter if any is plugged in - this is just the way those work. For an overview just hit the Windows-button (still *Windows*, unfortunately) and start typing in something like *Set up USB game controllers* and start that - you should see both of them, double-click one and you'll be able to test it all out (four directions, one button).
+
+When it comes to emulators I've tried out Vice for Windows, here you'll need to select and assign each joystick to a port - save settings and that should be it. Remember the irritation that came with the Commodore 64 the joystick to be in different ports with different games, it's still there so keep that in mind.
+
+I also tried out the WinAPE emulator (emulate the Amstrad CPC line of computers), and as far as I can tell it works right out of the box. Yay!
+
 # 2> BOM
 If you want to build a C64 Joystick Adapter that converts standard Atari-style joysticks into USB joysticks, then this is mainly the list of all the parts that you'd need for it. Most you should be able to get from your friendly neighbourhood electronics store, but I don't have any of those - so consider this a list of search tips for ebay, AliExpress, banggood or any similar site. Any parts listed in parenthesis might strictly not be needed for basic functionality for a single joystick, but if you're ordering stuff you might as well build the whole thing.
 
