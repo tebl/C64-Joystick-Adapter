@@ -19,9 +19,10 @@
    PADDLE_SAMPLE_RATE is a timer deciding how often we'll attempt to read the
    values.
 */
-#define PADDLE_SAMPLE_DELAY 10
-#define PADDLE_SAMPLE_RATE 50
-#define PADDLE_MIN_CHANGE 50
+#define PADDLE_SAMPLE_DELAY 10        // First read is discarded, time to settle.
+#define PADDLE_SAMPLE_RATE 50         // Ideal time to wait between updates
+#define PADDLE_MIN_CHANGE 40          // Increase to decrease resolution,
+                                      // reduces the jitter from the signal.
 
 /* When uncommented this allows the PWR light to show joystick activity,
  * it'll grow brighter with movement and fade over time.

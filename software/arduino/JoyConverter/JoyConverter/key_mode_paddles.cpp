@@ -98,6 +98,8 @@ void update_axis(const int port_id, const int axis) {
  * jitter and then make sure updates are sent to the computer.
  */
 void update_paddle(const int port_id) {
+  debounce_joystick_key(PORT_1, KEY_MODE);
+
   update_axis(port_id, AXIS_X);
   debounce_joystick_key(port_id, KEY_LEFT);
 

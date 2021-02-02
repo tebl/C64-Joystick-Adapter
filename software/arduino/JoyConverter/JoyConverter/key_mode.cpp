@@ -90,7 +90,7 @@ void debounce_joystick_key(const int port_id, const byte key_id) {
         if (millis() > key_debounce[port_id][key_id]) {
           key_state[port_id][key_id] = KEY_STATE_WAIT_RELEASE;
 
-          if (key_id == KEY_MODE) {
+          if (port_id == PORT_1 && key_id == KEY_MODE) {
             flash_pwr(3);
             swap_ports = !swap_ports;
           } else {
