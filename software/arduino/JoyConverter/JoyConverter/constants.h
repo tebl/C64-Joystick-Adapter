@@ -41,6 +41,8 @@
 #define KEY_RIGHT 3
 #define KEY_FIRE 4
 #define KEY_COUNT 5
+#define AXIS_X 0
+#define AXIS_Y 1
 
 const int KEY_PINS[PORT_COUNT][KEY_COUNT] = { 
     { PIN_P1_UP, PIN_P1_DOWN, PIN_P1_LEFT, PIN_P1_RIGHT, PIN_P1_FIRE }, 

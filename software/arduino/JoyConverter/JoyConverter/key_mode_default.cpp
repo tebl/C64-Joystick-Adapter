@@ -11,33 +11,12 @@
  * 
  * https://github.com/MHeironimus/ArduinoJoystickLibrary
  */
-unsigned long pwr_timer;
+extern unsigned long pwr_timer;
 extern unsigned long key_debounce[PORT_COUNT][KEY_COUNT];
 extern byte key_state[PORT_COUNT][KEY_COUNT];
-
-Joystick_ Joystick[PORT_COUNT] = {
-  Joystick_(
-    0x03, 
-    JOYSTICK_TYPE_GAMEPAD, 
-    1, 0,                 // Button Count, Hat Switch Count
-    true, true, false,    // X and Y, but no Z Axis
-    false, false, false,  // No Rx, Ry, or Rz
-    false, false,         // No rudder or throttle
-    false, false, false   // No accelerator, brake, or steering
-  ),
-  Joystick_(
-    0x04, 
-    JOYSTICK_TYPE_GAMEPAD, 
-    1, 0,                 // Button Count, Hat Switch Count
-    true, true, false,    // X and Y, but no Z Axis
-    false, false, false,  // No Rx, Ry, or Rz
-    false, false,         // No rudder or throttle
-    false, false, false   // No accelerator, brake, or steering
-  )
-};
+extern Joystick_ Joystick[PORT_COUNT];
 
 void init_mode_default() {
-  flash_pwr(3);
   set_pwr(true);
   pwr_timer = millis() + LED_SHUTOFF;
 
@@ -58,43 +37,6 @@ void init_mode_default() {
     Joystick[index].setXAxisRange(-1, 1);
     Joystick[index].setYAxisRange(-1, 1);
     Joystick[index].begin(false);
-  }
-}
-
-/* Check the state of the specified key_id, but note that we're not sending
- * anything to the computer at this point - this only updates the state
- * engine. Key presses won't be registered until a certain amount of time has
- * passed, this adds a miniscule amount of delay in order to debounce the keys.
- * The delay should be below a tenth of normal human reaction times, so it 
- * worth keeping in order to avoid jittery joystick responses.
- */
-void debounce_joystick_key(const int port_id, const byte key_id) {
-  if (digitalRead(KEY_PINS[port_id][key_id]) == LOW) {
-    switch (key_state[port_id][key_id]) {
-      case KEY_STATE_NEUTRAL:
-        if(key_debounce[port_id][key_id] == 0) {
-          key_debounce[port_id][key_id] = millis() + DEBOUNCE_DELAY;
-          return;
-        }
-
-        if (millis() > key_debounce[port_id][key_id]) {
-          key_state[port_id][key_id] = KEY_STATE_WAIT_RELEASE;
-          #ifdef PWR_ACTIVITY
-          boost_pwr();
-          pwr_timer = millis() + LED_FADE_SPEED;
-          #endif
-          return;
-        }
-        break;
-      
-      case KEY_STATE_WAIT_RELEASE:
-        /* Wait for a high state to release */
-      default:
-        break;
-    }
-  } else {
-    key_debounce[port_id][key_id] = 0;
-    key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
   }
 }
 

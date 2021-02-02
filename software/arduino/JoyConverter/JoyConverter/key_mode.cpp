@@ -1,13 +1,38 @@
 #include <Arduino.h>
+#include <Joystick.h>
 #include "constants.h"
 #include "settings.h"
 #include "key_mode_default.h"
+#include "key_mode_paddles.h"
+#include "led_control.h"
 
+unsigned long pwr_timer;
 extern bool boot_done;
 int joykey_mode = KEY_MODE_DEFAULT;
 
 unsigned long key_debounce[PORT_COUNT][KEY_COUNT];
 byte key_state[PORT_COUNT][KEY_COUNT];
+
+Joystick_ Joystick[PORT_COUNT] = {
+  Joystick_(
+    0x03, 
+    JOYSTICK_TYPE_JOYSTICK, 
+    2, 0,                 // Button Count, Hat Switch Count
+    true, true, false,    // X and Y, but no Z Axis
+    false, false, false,  // No Rx, Ry, or Rz
+    false, false,         // No rudder or throttle
+    false, false, false   // No accelerator, brake, or steering
+  ),
+  Joystick_(
+    0x04, 
+    JOYSTICK_TYPE_JOYSTICK, 
+    2, 0,                 // Button Count, Hat Switch Count
+    true, true, false,    // X and Y, but no Z Axis
+    false, false, false,  // No Rx, Ry, or Rz
+    false, false,         // No rudder or throttle
+    false, false, false   // No accelerator, brake, or steering
+  )
+};
 
 bool is_waiting_release(const int port_id, const byte key_id) {
   return key_state[port_id][key_id] == KEY_STATE_WAIT_RELEASE;
@@ -17,13 +42,12 @@ bool init_mode(byte mode) {
   joykey_mode = mode;
   boot_done = true;
   switch (mode) {
-    /*
-    case KEY_MODE_AUTOFIRE:
-      init_mode_autofire();
+    case KEY_MODE_PADDLES:
+      init_mode_paddles();
       #ifndef FORCE_ALTERNATE
         delay(BOOT_DELAY);
       #endif
-      break;*/
+      break;
     
     case KEY_MODE_DEFAULT:
     default:
@@ -35,15 +59,50 @@ bool init_mode(byte mode) {
 
 void handle_mode() {
   switch (joykey_mode) {
-    /*
-    case KEY_MODE_AUTOFIRE:
-      handle_mode_autofire();
+    case KEY_MODE_PADDLES:
+      handle_mode_paddles();
       break;
-      */
     
     case KEY_MODE_DEFAULT:
     default:
       handle_mode_default();
       break;
+  }
+}
+
+/* Check the state of the specified key_id, but note that we're not sending
+ * anything to the computer at this point - this only updates the state
+ * engine. Key presses won't be registered until a certain amount of time has
+ * passed, this adds a miniscule amount of delay in order to debounce the keys.
+ * The delay should be below a tenth of normal human reaction times, so it 
+ * worth keeping in order to avoid jittery joystick responses.
+ */
+void debounce_joystick_key(const int port_id, const byte key_id) {
+  if (digitalRead(KEY_PINS[port_id][key_id]) == LOW) {
+    switch (key_state[port_id][key_id]) {
+      case KEY_STATE_NEUTRAL:
+        if(key_debounce[port_id][key_id] == 0) {
+          key_debounce[port_id][key_id] = millis() + DEBOUNCE_DELAY;
+          return;
+        }
+
+        if (millis() > key_debounce[port_id][key_id]) {
+          key_state[port_id][key_id] = KEY_STATE_WAIT_RELEASE;
+          #ifdef PWR_ACTIVITY
+          boost_pwr();
+          pwr_timer = millis() + LED_FADE_SPEED;
+          #endif
+          return;
+        }
+        break;
+      
+      case KEY_STATE_WAIT_RELEASE:
+        /* Wait for a high state to release */
+      default:
+        break;
+    }
+  } else {
+    key_debounce[port_id][key_id] = 0;
+    key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
   }
 }
