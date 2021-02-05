@@ -28,12 +28,14 @@ void init_mode_default() {
   pinMode(PIN_P1_LEFT, INPUT_PULLUP);
   pinMode(PIN_P1_RIGHT, INPUT_PULLUP);
   pinMode(PIN_P1_FIRE, INPUT_PULLUP);
+  pinMode(PIN_POT_AX, INPUT);
 
   pinMode(PIN_P2_UP, INPUT_PULLUP);
   pinMode(PIN_P2_DOWN, INPUT_PULLUP);
   pinMode(PIN_P2_LEFT, INPUT_PULLUP);
   pinMode(PIN_P2_RIGHT, INPUT_PULLUP);
   pinMode(PIN_P2_FIRE, INPUT_PULLUP);
+  pinMode(PIN_POT_BX, INPUT);
 
   /* Initialize port */
   for (int index = 0; index < PORT_COUNT; index++) {
@@ -60,6 +62,7 @@ void update_joystick(const int port_id) {
   else Joystick[port_id].setYAxis(0);
 
   Joystick[port_id].setButton(0, is_waiting_release(port_id, KEY_FIRE));
+  Joystick[port_id].setButton(1, is_waiting_release(port_id, KEY_ALT_FIRE));
   Joystick[port_id].sendState();
 }
 
@@ -68,7 +71,7 @@ void update_joystick(const int port_id) {
  */
 void update_port(const int port_id) {
   for (int key_id = 0; key_id < KEY_COUNT; key_id++) {
-    debounce_joystick_key(port_id, key_id);
+    debounce_joystick_key(port_id, key_id, (key_id == KEY_ALT_FIRE));
   }
 
   update_joystick(port_id);

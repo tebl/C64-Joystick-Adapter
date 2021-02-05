@@ -75,11 +75,12 @@ void handle_mode() {
  * The delay should be below a tenth of normal human reaction times, so it 
  * worth keeping in order to avoid jittery joystick responses.
  */
-void debounce_joystick_key(const int port_id, const byte key_id) {
+void debounce_joystick_key(const int port_id, const byte key_id, const bool invert) {
   int current_port = port_id;
   if (swap_ports) current_port = (port_id == PORT_1 ? PORT_2 : PORT_1);
+  int active = (invert ? HIGH : LOW);
 
-  if (digitalRead(KEY_PINS[current_port][key_id]) == LOW) {
+  if (digitalRead(KEY_PINS[current_port][key_id]) == active) {
     switch (key_state[port_id][key_id]) {
       case KEY_STATE_NEUTRAL:
         if (key_debounce[port_id][key_id] == 0) {
