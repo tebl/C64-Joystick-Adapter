@@ -13,6 +13,7 @@
 #define LED_STEP 8                    // Change per step when fading
 #define LED_FLASH_DELAY 100           // Delay between blink steps
 #define BOOT_MODE_THRESHOLD 1000      // Time needed before alternate mode
+#define DEBOUNCE_DELAY 10             // Debounce delay for keys
 
 /* When uncommented this allows the PWR light to show joystick activity,
  * it'll grow brighter with movement and fade over time.

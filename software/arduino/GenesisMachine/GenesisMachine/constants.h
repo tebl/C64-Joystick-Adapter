@@ -34,4 +34,15 @@
 #define PORT_1 0
 #define PORT_2 1
 #define PORT_COUNT 2
+
+#define KEY_MODE 0
+#define KEY_COUNT 1
+
+const int KEY_PINS[PORT_COUNT][KEY_COUNT] = { 
+    { PIN_MODE }, 
+    { PIN_MODE }
+};
+
+#define KEY_STATE_NEUTRAL 0
+#define KEY_STATE_WAIT_RELEASE 1
 #endif

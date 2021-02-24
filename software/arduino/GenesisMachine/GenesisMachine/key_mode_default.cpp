@@ -77,20 +77,20 @@ void update_joystick(const int port_id, const word gamepad_state, const word gam
   Joystick[port_id].sendState();
 }
 
-/* Takes care of updating key states, effectively debouncing the keys to avoid
- * jitter and then make sure updates are sent to the computer.
+/* Takes care of updating key states, update_joystick takes care of actually
+ * sending the button states over USB.
  */
 void update_port(const int port_id) {
   switch (port_id) {
     case PORT_1:
       gamepad_1_state = gamepad_1.getState();
-      update_joystick(PORT_1, gamepad_1_state, gamepad_1_last);
+      update_joystick((swap_ports ? PORT_2 : PORT_1), gamepad_1_state, gamepad_1_last);
       gamepad_1_last = gamepad_1_state;
 
     case PORT_2:
     default:
       gamepad_2_state = gamepad_2.getState();
-      update_joystick(PORT_2, gamepad_2_state, gamepad_2_last);
+      update_joystick((swap_ports ? PORT_1 : PORT_2), gamepad_2_state, gamepad_2_last);
       gamepad_2_last = gamepad_2_state;
       break;
   }
@@ -106,6 +106,7 @@ void handle_mode_default() {
     pwr_timer = millis() + LED_FADE_SPEED;
   }
 
+  debounce_joystick_key(PORT_1, KEY_MODE, false);
   for (int port_id = 0; port_id < PORT_COUNT; port_id++) {
     update_port(port_id);
   }
