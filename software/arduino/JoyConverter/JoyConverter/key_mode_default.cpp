@@ -71,6 +71,13 @@ void update_joystick(const int port_id) {
  */
 void update_port(const int port_id) {
   for (int key_id = 0; key_id < KEY_COUNT; key_id++) {
+    #ifdef DISABLE_ALT_FIRE
+      if (key_id == KEY_ALT_FIRE) {
+        clear_key(port_id, key_id);
+        continue;
+      }
+    #endif
+
     debounce_joystick_key(port_id, key_id, (key_id == KEY_ALT_FIRE));
   }
 

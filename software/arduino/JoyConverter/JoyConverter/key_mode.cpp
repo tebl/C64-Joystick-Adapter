@@ -68,6 +68,12 @@ void handle_mode() {
   }
 }
 
+/* Manually clear key state. */
+void clear_key(const int port_id, const byte key_id) {
+  key_debounce[port_id][key_id] = 0;
+  key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
+}
+
 /* Check the state of the specified key_id, but note that we're not sending
  * anything to the computer at this point - this only updates the state
  * engine. Key presses won't be registered until a certain amount of time has
@@ -110,8 +116,7 @@ void debounce_joystick_key(const int port_id, const byte key_id, const bool inve
         break;
     }
   } else {
-    key_debounce[port_id][key_id] = 0;
-    key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
+    clear_key(port_id, key_id);
   }
 }
 

@@ -4,7 +4,7 @@
  * Settings
  */
 #define APP_TITLE "JoyKEY JoyConverter"
-#define APP_VERSION "0.2"
+#define APP_VERSION "0.3"
 
 #define LED_PWR_MAX 128               // Maximum brightness
 #define LED_SHUTOFF 5000              // Time after boot when fade starts
@@ -13,6 +13,7 @@
 #define LED_FLASH_DELAY 100           // Delay between blink steps
 #define BOOT_MODE_THRESHOLD 1000      // Time needed before alternate mode
 #define DEBOUNCE_DELAY 10             // Debounce delay for keys
+//#define DISABLE_ALT_FIRE              // Needed when 220k resistors not installed.
 
 /* Paddles are analog inputs and they need to be sampled twice, with a short
    delay while the Arduino input stabilizes (this is PADDLE_SAMPLE_DELAY).
