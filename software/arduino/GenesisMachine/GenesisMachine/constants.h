@@ -29,20 +29,32 @@
 #define LED_OFF 0
 
 #define KEY_MODE_DEFAULT 0
-#define KEY_MODE_PADDLES 1
+#define KEY_MODE_AUTOFIRE 1
 
 #define PORT_1 0
 #define PORT_2 1
 #define PORT_COUNT 2
 
-#define KEY_MODE 0
-#define KEY_COUNT 1
+#define KEY_A 0
+#define KEY_B 1
+#define KEY_C 2
+#define KEY_X 3
+#define KEY_Y 4
+#define KEY_Z 5
+#define KEY_START 6
+#define KEY_MODE 7
+#define KEY_COUNT 8
 
+/* Mainly just to keep code compatible between things. I know I'm lazy, but
+ * free is free and that was the price you were given for all this!
+ */
 const int KEY_PINS[PORT_COUNT][KEY_COUNT] = { 
-    { PIN_MODE }, 
-    { PIN_MODE }
+    { 0, 0, 0, 0, 0, 0, 0, PIN_MODE }, 
+    { 0, 0, 0, 0, 0, 0, 0, PIN_MODE }
 };
 
 #define KEY_STATE_NEUTRAL 0
 #define KEY_STATE_WAIT_RELEASE 1
+#define KEY_STATE_ON_CYCLE 2
+#define KEY_STATE_OFF_CYCLE 3
 #endif

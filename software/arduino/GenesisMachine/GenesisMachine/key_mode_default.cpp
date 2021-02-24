@@ -6,21 +6,9 @@
 #include "led_control.h"
 #include "key_mode.h"
 
-/* Uses the ArduinoJoystickLibrary by MHeironimus, this section is mostly based
- * on his Gamepad-example that comes with the library. The bugs are probably my
- * contribution to the greater good.
- * 
- * https://github.com/MHeironimus/ArduinoJoystickLibrary
- */
-
 extern unsigned long pwr_timer;
 extern Joystick_ Joystick[PORT_COUNT];
 extern bool swap_ports;
-
-/* Sega gamepad states are read using the SegaController by Jon Thysell.
- *
- * https://github.com/jonthysell/SegaController
- */
 
 extern SegaController gamepad_1;
 extern word gamepad_1_state;
@@ -42,10 +30,6 @@ void init_mode_default() {
   }
 }
 
-bool is_key_active(const word gamepad_state, const word key_mask) {
-  return (gamepad_state & key_mask) > 0;
-}
-
 /* Update and send the joystick state to the computer. */
 void update_joystick(const int port_id, const word gamepad_state, const word gamepad_last) {
   if (gamepad_state != gamepad_last) {
@@ -65,14 +49,14 @@ void update_joystick(const int port_id, const word gamepad_state, const word gam
   else if (is_key_active(gamepad_state, SC_BTN_DOWN)) Joystick[port_id].setYAxis(1);
   else Joystick[port_id].setYAxis(0);
 
-  Joystick[port_id].setButton(0, is_key_active(gamepad_state, SC_BTN_A));
-  Joystick[port_id].setButton(1, is_key_active(gamepad_state, SC_BTN_B));
-  Joystick[port_id].setButton(2, is_key_active(gamepad_state, SC_BTN_C));
-  Joystick[port_id].setButton(3, is_key_active(gamepad_state, SC_BTN_X));
-  Joystick[port_id].setButton(4, is_key_active(gamepad_state, SC_BTN_Y));
-  Joystick[port_id].setButton(5, is_key_active(gamepad_state, SC_BTN_Z));
-  Joystick[port_id].setButton(6, is_key_active(gamepad_state, SC_BTN_START));
-  Joystick[port_id].setButton(7, is_key_active(gamepad_state, SC_BTN_MODE));
+  Joystick[port_id].setButton(KEY_A, is_key_active(gamepad_state, SC_BTN_A));
+  Joystick[port_id].setButton(KEY_B, is_key_active(gamepad_state, SC_BTN_B));
+  Joystick[port_id].setButton(KEY_C, is_key_active(gamepad_state, SC_BTN_C));
+  Joystick[port_id].setButton(KEY_X, is_key_active(gamepad_state, SC_BTN_X));
+  Joystick[port_id].setButton(KEY_Y, is_key_active(gamepad_state, SC_BTN_Y));
+  Joystick[port_id].setButton(KEY_Z, is_key_active(gamepad_state, SC_BTN_Z));
+  Joystick[port_id].setButton(KEY_START, is_key_active(gamepad_state, SC_BTN_START));
+  Joystick[port_id].setButton(KEY_MODE, is_key_active(gamepad_state, SC_BTN_MODE));
 
   Joystick[port_id].sendState();
 }

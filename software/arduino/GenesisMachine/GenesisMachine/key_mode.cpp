@@ -4,6 +4,7 @@
 #include "constants.h"
 #include "settings.h"
 #include "key_mode_default.h"
+#include "key_mode_autofire.h"
 #include "led_control.h"
 
 extern bool boot_done;
@@ -13,6 +14,13 @@ int joykey_mode = KEY_MODE_DEFAULT;
 bool swap_ports = false;
 unsigned long key_debounce[PORT_COUNT][KEY_COUNT];
 byte key_state[PORT_COUNT][KEY_COUNT];
+
+/* Uses the ArduinoJoystickLibrary by MHeironimus, this section is mostly based
+ * on his Gamepad-example that comes with the library. The bugs are probably my
+ * contribution to the greater good.
+ * 
+ * https://github.com/MHeironimus/ArduinoJoystickLibrary
+ */
 
 Joystick_ Joystick[PORT_COUNT] = {
   Joystick_(
@@ -35,8 +43,11 @@ Joystick_ Joystick[PORT_COUNT] = {
   )
 };
 
-// Specify the Arduino pins that are connected to
-// DB9 Pin 7, DB9 Pin 1, DB9 Pin 2, DB9 Pin 3, DB9 Pin 4, DB9 Pin 6, DB9 Pin 9
+/* Sega gamepad states are read using the SegaController by Jon Thysell.
+ *
+ * https://github.com/jonthysell/SegaController
+ */
+
 SegaController gamepad_1(
   /* Sega DB9 pin 7 */ PIN_POT_AY,
   /*              1 */ PIN_P1_UP, 
@@ -65,8 +76,8 @@ bool init_mode(byte mode) {
   joykey_mode = mode;
   boot_done = true;
   switch (mode) {
-    case KEY_MODE_PADDLES:
-      //init_mode_paddles();
+    case KEY_MODE_AUTOFIRE:
+      init_mode_autofire();
       #ifndef FORCE_ALTERNATE
         delay(BOOT_DELAY);
       #endif
@@ -82,8 +93,8 @@ bool init_mode(byte mode) {
 
 void handle_mode() {
   switch (joykey_mode) {
-    case KEY_MODE_PADDLES:
-      //handle_mode_paddles();
+    case KEY_MODE_AUTOFIRE:
+      handle_mode_autofire();
       break;
     
     case KEY_MODE_DEFAULT:
@@ -149,4 +160,12 @@ void debounce_joystick_key(const int port_id, const byte key_id, const bool inve
  */
 bool is_waiting_release(const int port_id, const byte key_id) {
   return key_state[port_id][key_id] == KEY_STATE_WAIT_RELEASE;
+}
+
+/* Check if a key is currently active, this is mainly just masking out the
+ * bits by using the bit mask supplied and returning whether we get a non-
+ * zero result. Key masks are defined within the SegaController library.
+ */
+bool is_key_active(const word gamepad_state, const word key_mask) {
+  return (gamepad_state & key_mask) > 0;
 }
