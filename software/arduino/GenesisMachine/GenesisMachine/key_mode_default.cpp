@@ -17,6 +17,10 @@ extern SegaController gamepad_2;
 extern word gamepad_2_state;
 extern word gamepad_2_last;
 
+extern unsigned long autofire_timer[PORT_COUNT][KEY_COUNT];
+extern bool autofire_enabled[PORT_COUNT][KEY_COUNT];
+extern byte key_state[PORT_COUNT][KEY_COUNT];
+
 void init_mode_default() {
   set_pwr(true);
   pwr_timer = millis() + LED_SHUTOFF;
@@ -28,6 +32,45 @@ void init_mode_default() {
     Joystick[index].setYAxisRange(-1, 1);
     Joystick[index].begin(false);
   }
+}
+
+void check_autofire_timers(const int port_id, const byte key_id) {
+  /* Handle auto fire */
+  if (autofire_enabled[port_id][key_id]) {
+    if (millis() > autofire_timer[port_id][key_id]) {
+      flip_state(port_id, key_id, AUTO_FIRE_PERIOD_ON, AUTO_FIRE_PERIOD_OFF);
+    }
+  } else {
+    clear_state(port_id, key_id);
+  }
+}
+
+/* Handle fire button, a normal press of the button will always take precedence
+ * over auto fire. Autofire can be activated by holding MODE and then pushing
+ * the button
+ */
+void handle_autofire(const int port_id, const byte key_id, const word key_mask, const word gamepad_state, const word gamepad_last) {
+  #ifdef ENABLE_AUTO_FIRE
+    if (is_key_active(gamepad_state, SC_BTN_MODE)) {
+      /* Toggle autofire mode at the release of a button, but only do so while
+       * the MODE button is being held on the controller. */
+      if (!is_key_active(gamepad_state, key_mask) && is_key_active(gamepad_last, key_mask)) {
+        autofire_enabled[port_id][key_id] = !autofire_enabled[port_id][key_id];
+      }
+
+      /* Keep auto fire running */
+      check_autofire_timers(port_id, key_id);
+    } else {
+      /* Process button presses normally, run autofire if not being held. */
+      if (is_key_active(gamepad_state, key_mask)) {
+        Joystick[port_id].setButton(key_id, is_key_active(gamepad_state, key_mask));
+      } else {
+        check_autofire_timers(port_id, key_id);
+      }
+    }
+  #else
+    Joystick[port_id].setButton(key_id, is_key_active(gamepad_state, key_mask));
+  #endif
 }
 
 /* Update and send the joystick state to the computer. */
@@ -49,15 +92,16 @@ void update_joystick(const int port_id, const word gamepad_state, const word gam
   else if (is_key_active(gamepad_state, SC_BTN_DOWN)) Joystick[port_id].setYAxis(1);
   else Joystick[port_id].setYAxis(0);
 
-  Joystick[port_id].setButton(KEY_A, is_key_active(gamepad_state, SC_BTN_A));
-  Joystick[port_id].setButton(KEY_B, is_key_active(gamepad_state, SC_BTN_B));
-  Joystick[port_id].setButton(KEY_C, is_key_active(gamepad_state, SC_BTN_C));
-  Joystick[port_id].setButton(KEY_X, is_key_active(gamepad_state, SC_BTN_X));
-  Joystick[port_id].setButton(KEY_Y, is_key_active(gamepad_state, SC_BTN_Y));
-  Joystick[port_id].setButton(KEY_Z, is_key_active(gamepad_state, SC_BTN_Z));
-  Joystick[port_id].setButton(KEY_START, is_key_active(gamepad_state, SC_BTN_START));
-  Joystick[port_id].setButton(KEY_MODE, is_key_active(gamepad_state, SC_BTN_MODE));
-
+  handle_autofire(port_id, KEY_A, SC_BTN_A, gamepad_state, gamepad_last);
+  handle_autofire(port_id, KEY_B, SC_BTN_B, gamepad_state, gamepad_last);
+  handle_autofire(port_id, KEY_C, SC_BTN_C, gamepad_state, gamepad_last);
+  handle_autofire(port_id, KEY_X, SC_BTN_X, gamepad_state, gamepad_last);
+  handle_autofire(port_id, KEY_Y, SC_BTN_Y, gamepad_state, gamepad_last);
+  handle_autofire(port_id, KEY_Z, SC_BTN_Z, gamepad_state, gamepad_last);
+  handle_autofire(port_id, KEY_START, SC_BTN_START, gamepad_state, gamepad_last);
+  #ifndef ENABLE_AUTO_FIRE
+    Joystick[port_id].setButton(KEY_MODE, is_key_active(gamepad_state, SC_BTN_MODE));
+  #endif
   Joystick[port_id].sendState();
 }
 

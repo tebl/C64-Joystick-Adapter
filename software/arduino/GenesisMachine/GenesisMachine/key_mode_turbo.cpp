@@ -17,8 +17,8 @@ extern SegaController gamepad_2;
 extern word gamepad_2_state;
 extern word gamepad_2_last;
 
-unsigned long autofire_timer[PORT_COUNT][3];
-bool autofire_enabled[PORT_COUNT][3];
+extern unsigned long autofire_timer[PORT_COUNT][KEY_COUNT];
+extern bool autofire_enabled[PORT_COUNT][KEY_COUNT];
 extern byte key_state[PORT_COUNT][KEY_COUNT];
 
 void init_mode_turbo() {
@@ -32,51 +32,6 @@ void init_mode_turbo() {
     Joystick[index].setYAxisRange(-1, 1);
     Joystick[index].begin(false);
   }
-}
-
-/* Handles the PWR led when it is under control of either autofire or rapid
- * fire. Which is a fancy way of saying that this determines if a minimum
- * power setting has been defined, if one has been - then we switch to that
- * instead of switching off.
- */
-void set_linked_led(const bool value) {
-  #ifdef LINK_AUTOFIRE_PWR
-    if (value) {
-      set_pwr(true);
-    } else {
-      #ifdef PWR_ACTIVITY_MIN
-        set_pwr(PWR_ACTIVITY_MIN);
-      #else
-        set_pwr(false);
-      #endif
-    }
-  #endif
-}
-
-/* Sets a specific button state and updates timers for the next transition,
- * this should only be used with the rapid fire and autofire modes.
- */
-void set_state(const int port_id, const byte key_id, byte cycle, const int period) {
-  set_linked_led(cycle == KEY_STATE_ON_CYCLE);
-  Joystick[port_id].setButton(key_id, (cycle == KEY_STATE_ON_CYCLE));
-  autofire_timer[port_id][key_id] = millis() + period;
-  key_state[port_id][key_id] = cycle;
-}
-
-void flip_state(const int port_id, const byte key_id, const int period_on, const int period_off) {
-  if (key_state[port_id][key_id] == KEY_STATE_ON_CYCLE) set_state(port_id, key_id, KEY_STATE_OFF_CYCLE, period_off);
-  else set_state(port_id, key_id, KEY_STATE_ON_CYCLE, period_on);
-}
-
-/* Clear key state, this is mainly just to ensure that we return to a neutral
- * state after turbo or autofire modes have previously been activated.
- */
-void clear_state(const int port_id, const byte key_id) {
-  if (key_state[port_id][key_id] != KEY_STATE_NEUTRAL) {
-    set_linked_led(false);
-    key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
-  }
-  Joystick[port_id].setButton(key_id, false);
 }
 
 /* Handle fire button pair, ABC should be processed normally and take precedence

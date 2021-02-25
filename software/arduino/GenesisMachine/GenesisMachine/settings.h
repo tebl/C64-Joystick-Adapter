@@ -4,7 +4,7 @@
  * Settings
  */
 #define APP_TITLE "GenesisMachine"
-#define APP_VERSION "0.2"
+#define APP_VERSION "0.3"
 
 #define LED_PWR_MAX 128               // Maximum brightness
 #define LED_SHUTOFF 3000              // Time after boot when fade starts
@@ -44,7 +44,7 @@
 /* These numbers tune the time autofire and rapid fire spend in each of the
  * phases, meaning they specify how much time the fire button is held in and
  * how much time until it is released again. 1000 divided by both periods added
- * together gives you the value in Hz.
+ * together gives you an approximate value in Hz.
  * 
  * Rapid fire is only used on the alternate turbo mode, it remaps the XYZ
  * buttons so that they function as rapid fire buttons for ABC. Auto fire is
