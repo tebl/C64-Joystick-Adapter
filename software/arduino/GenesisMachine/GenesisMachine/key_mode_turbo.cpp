@@ -69,7 +69,7 @@ void flip_state(const int port_id, const byte key_id, const int period_on, const
 }
 
 /* Clear key state, this is mainly just to ensure that we return to a neutral
- * state after turbo modes have been used.
+ * state after turbo or autofire modes have previously been activated.
  */
 void clear_state(const int port_id, const byte key_id) {
   if (key_state[port_id][key_id] != KEY_STATE_NEUTRAL) {
@@ -80,8 +80,9 @@ void clear_state(const int port_id, const byte key_id) {
 }
 
 /* Handle fire button pair, ABC should be processed normally and take precedence
- * while XYZ will serve as rapid fire buttons instead. Autofire modes will only
- * be active if no other button has been pushed.
+ * while XYZ will serve as rapid fire buttons instead. Autofire can be activated
+ * by holding MODE and then pushing the button, when active it will only cycle 
+ * if none of the other modes are currently active.
  */
 void handle_turbo(const int port_id, const byte key_id, const word key_mask, const byte key_id2, const word key_mask2, const word gamepad_state, const word gamepad_last) {
   if (is_key_active(gamepad_state, key_mask)) {
@@ -152,9 +153,7 @@ void update_joystick_turbo(const int port_id, const word gamepad_state, const wo
   handle_turbo(port_id, KEY_A, SC_BTN_A, KEY_X, SC_BTN_X, gamepad_state, gamepad_last);
   handle_turbo(port_id, KEY_B, SC_BTN_B, KEY_Y, SC_BTN_Y, gamepad_state, gamepad_last);
   handle_turbo(port_id, KEY_C, SC_BTN_C, KEY_Z, SC_BTN_Z, gamepad_state, gamepad_last);
-
   Joystick[port_id].setButton(KEY_START, is_key_active(gamepad_state, SC_BTN_START));
-  //Joystick[port_id].setButton(KEY_MODE, is_key_active(gamepad_state, SC_BTN_MODE));
 
   Joystick[port_id].sendState();
 }
