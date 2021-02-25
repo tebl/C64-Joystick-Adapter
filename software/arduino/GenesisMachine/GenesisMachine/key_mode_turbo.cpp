@@ -105,28 +105,32 @@ void handle_turbo(const int port_id, const byte key_id, const word key_mask, con
           break;
       }
     } else {
-      /* Toggle autofire when mode is held and we've detected a released fire
-       * button (ie. it is on in the last gamestate and not on anymore).
-       */
-      if (is_key_active(gamepad_state, SC_BTN_MODE)) {
-        if (!is_key_active(gamepad_state, key_mask) && is_key_active(gamepad_last, key_mask)) {
-          autofire_enabled[port_id][key_id] = !autofire_enabled[port_id][key_id];
+      #ifdef ENABLE_AUTO_FIRE
+        /* Toggle autofire when mode is held and we've detected a released fire
+        * button (ie. it is on in the last gamestate and not on anymore).
+        */
+        if (is_key_active(gamepad_state, SC_BTN_MODE)) {
+          if (!is_key_active(gamepad_state, key_mask) && is_key_active(gamepad_last, key_mask)) {
+            autofire_enabled[port_id][key_id] = !autofire_enabled[port_id][key_id];
+          }
         }
-      }
 
-      /* Handle auto fire */
-      if (autofire_enabled[port_id][key_id]) {
-        if (millis() > autofire_timer[port_id][key_id]) {
-          flip_state(port_id, key_id, AUTO_FIRE_PERIOD_ON, AUTO_FIRE_PERIOD_OFF);
+        /* Handle auto fire */
+        if (autofire_enabled[port_id][key_id]) {
+          if (millis() > autofire_timer[port_id][key_id]) {
+            flip_state(port_id, key_id, AUTO_FIRE_PERIOD_ON, AUTO_FIRE_PERIOD_OFF);
+          }
+        } else {
+          /* Clear key state when button not used, this only run when it is not
+          * under control by the alternate fire modes (auto fire or rapid fire).
+          * Ensures that we don't end up with a button that is stuck in the held
+          * position.
+          */
+          clear_state(port_id, key_id);
         }
-      } else {
-        /* Clear key state when button not used, this only run when it is not
-         * under control by the alternate fire modes (auto fire or rapid fire).
-         * Ensures that we don't end up with a button that is stuck in the held
-         * position.
-         */
+      #else
         clear_state(port_id, key_id);
-      }
+      #endif
     }
   }
 }
@@ -154,7 +158,9 @@ void update_joystick_turbo(const int port_id, const word gamepad_state, const wo
   handle_turbo(port_id, KEY_B, SC_BTN_B, KEY_Y, SC_BTN_Y, gamepad_state, gamepad_last);
   handle_turbo(port_id, KEY_C, SC_BTN_C, KEY_Z, SC_BTN_Z, gamepad_state, gamepad_last);
   Joystick[port_id].setButton(KEY_START, is_key_active(gamepad_state, SC_BTN_START));
-
+  #ifndef ENABLE_AUTO_FIRE
+    Joystick[port_id].setButton(KEY_MODE, is_key_active(gamepad_state, SC_BTN_MODE));
+  #endif
   Joystick[port_id].sendState();
 }
 

@@ -35,16 +35,24 @@
  */
 #define ALTERNATE_MODE KEY_MODE_TURBO
 
-/* Uncomment this line to force the alternate mode, meaning that the magic
- * key combination requirement on startup is removed completely.
+/* Uncomment one of these lines to force a specific mode, meaning that the
+ * the startup timer allowing you to hold in the mode button is removed.
  */
+//#define FORCE_DEFAULT
 //#define FORCE_ALTERNATE
 
 /* These numbers tune the time autofire and rapid fire spend in each of the
  * phases, meaning they specify how much time the fire button is held in and
  * how much time until it is released again. 1000 divided by both periods added
  * together gives you the value in Hz.
+ * 
+ * Rapid fire is only used on the alternate turbo mode, it remaps the XYZ
+ * buttons so that they function as rapid fire buttons for ABC. Auto fire is
+ * available in both modes, it is enabled by holding mode and pushing the ABC
+ * buttons (disables the mode button). Remove ENABLE_AUTO_FIRE below to disable
+ * this, allowing the mode button to be used as normal.
  */
+#define ENABLE_AUTO_FIRE
 #define AUTO_FIRE_PERIOD_ON 80
 #define AUTO_FIRE_PERIOD_OFF 80
 #define RAPID_FIRE_PERIOD_ON 40
