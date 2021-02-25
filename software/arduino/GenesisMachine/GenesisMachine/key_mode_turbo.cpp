@@ -52,53 +52,56 @@ void set_linked_led(const bool value) {
   #endif
 }
 
+void set_cycle_on(const int port_id, const byte key_id, const int period) {
+  set_linked_led(true);
+  Joystick[port_id].setButton(key_id, true);
+  autofire_timer[port_id][key_id] = millis() + period;
+  key_state[port_id][key_id] = KEY_STATE_ON_CYCLE;
+}
+
+void set_cycle_off(const int port_id, const byte key_id, const int period) {
+  set_linked_led(false);
+  Joystick[port_id].setButton(key_id, false);
+  autofire_timer[port_id][key_id] = millis() + period;
+  key_state[port_id][key_id] = KEY_STATE_OFF_CYCLE;
+}
+
+void flip_cycle(const int port_id, const byte key_id, const int period_on, const int period_off) {
+  if (key_state[port_id][key_id] == KEY_STATE_ON_CYCLE) set_cycle_off(port_id, key_id, period_off);
+  else set_cycle_on(port_id, key_id, period_on);
+}
+
 /* Handle fire button pair, ABC should be processed normally and take precedence
  * while XYZ will serve as rapid fire buttons instead.
  */
 void handle_turbo(const int port_id, const byte key_id, const word key_mask, const byte key_id2, const word key_mask2, const word gamepad_state, const word gamepad_last) {
-  if (is_key_active(gamepad_state, key_mask)) Joystick[port_id].setButton(key_id, true);
-  else {
-      if (is_key_active(gamepad_state, key_mask2)) {
-        // Rapid fire is active
-        switch (key_state[port_id][key_id]) {
-          case KEY_STATE_NEUTRAL:
-            Joystick[port_id].setButton(key_id, true);
-            autofire_timer[port_id][key_id] = millis() + RAPID_FIRE_PERIOD_ON;
-            key_state[port_id][key_id] = KEY_STATE_ON_CYCLE;
-            break;
-          
-          case KEY_STATE_ON_CYCLE:
-            if (millis() < autofire_timer[port_id][key_id]) {
-              set_linked_led(true);
-              Joystick[port_id].setButton(key_id, true);
-            } else {
-              Joystick[port_id].setButton(key_id, false);
-              autofire_timer[port_id][key_id] = millis() + RAPID_FIRE_PERIOD_OFF;
-              key_state[port_id][key_id] = KEY_STATE_OFF_CYCLE;
-            }
-            break;
-          
-          case KEY_STATE_OFF_CYCLE:
-          default:
-            if (millis() < autofire_timer[port_id][key_id]) {
-              set_linked_led(false);
-              Joystick[port_id].setButton(key_id, false);
-            } else {
-              Joystick[port_id].setButton(key_id, true);
-              autofire_timer[port_id][key_id] = millis() + RAPID_FIRE_PERIOD_ON;
-              key_state[port_id][key_id] = KEY_STATE_ON_CYCLE;
-            }
-            break;
-        }
+  if (is_key_active(gamepad_state, key_mask)) {
+    /* Handle regular button */
+    Joystick[port_id].setButton(key_id, true);
+  } else {
+    /* Handle turbo button */
+    if (is_key_active(gamepad_state, key_mask2)) {
+      switch (key_state[port_id][key_id]) {
+        case KEY_STATE_NEUTRAL:
+          set_cycle_on(port_id, key_id, RAPID_FIRE_PERIOD_ON);
+          break;
+        
+        case KEY_STATE_ON_CYCLE:
+        case KEY_STATE_OFF_CYCLE:
+        default:
+          if (millis() > autofire_timer[port_id][key_id]) {
+            flip_cycle(port_id, key_id, RAPID_FIRE_PERIOD_ON, RAPID_FIRE_PERIOD_OFF);
+          }
+          break;
       }
-      else {
-        /* Clear key states */
-        if (key_state[port_id][key_id] != KEY_STATE_NEUTRAL) {
-          set_linked_led(false);
-          key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
-        }
-        Joystick[port_id].setButton(key_id, false);
+    } else {
+      /* Clear key states in case turbo was previously active */
+      if (key_state[port_id][key_id] != KEY_STATE_NEUTRAL) {
+        set_linked_led(false);
+        key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
       }
+      Joystick[port_id].setButton(key_id, false);
+    }
   }
 }
 
