@@ -29,7 +29,7 @@
 #define LED_OFF 0
 
 #define KEY_MODE_DEFAULT 0
-#define KEY_MODE_AUTOFIRE 1
+#define KEY_MODE_TURBO 1
 
 #define PORT_1 0
 #define PORT_2 1

@@ -20,7 +20,7 @@ extern word gamepad_2_last;
 unsigned long autofire_timer[PORT_COUNT][3];
 extern byte key_state[PORT_COUNT][KEY_COUNT];
 
-void init_mode_autofire() {
+void init_mode_turbo() {
   flash_pwr(3);
   pwr_timer = millis() + LED_SHUTOFF;
   pinMode(PIN_MODE, INPUT_PULLUP);
@@ -55,7 +55,7 @@ void set_linked_led(const bool value) {
 /* Handle fire button pair, ABC should be processed normally and take precedence
  * while XYZ will serve as rapid fire buttons instead.
  */
-void handle_autofire(const int port_id, const byte key_id, const word key_mask, const byte key_id2, const word key_mask2, const word gamepad_state, const word gamepad_last) {
+void handle_turbo(const int port_id, const byte key_id, const word key_mask, const byte key_id2, const word key_mask2, const word gamepad_state, const word gamepad_last) {
   if (is_key_active(gamepad_state, key_mask)) Joystick[port_id].setButton(key_id, true);
   else {
       if (is_key_active(gamepad_state, key_mask2)) {
@@ -103,7 +103,7 @@ void handle_autofire(const int port_id, const byte key_id, const word key_mask, 
 }
 
 /* Update and send the joystick state to the computer. */
-void update_joystick_autofire(const int port_id, const word gamepad_state, const word gamepad_last) {
+void update_joystick_turbo(const int port_id, const word gamepad_state, const word gamepad_last) {
   if (gamepad_state != gamepad_last) {
     #ifdef PWR_ACTIVITY
       boost_pwr();
@@ -121,9 +121,9 @@ void update_joystick_autofire(const int port_id, const word gamepad_state, const
   else if (is_key_active(gamepad_state, SC_BTN_DOWN)) Joystick[port_id].setYAxis(1);
   else Joystick[port_id].setYAxis(0);
 
-  handle_autofire(port_id, KEY_A, SC_BTN_A, KEY_X, SC_BTN_X, gamepad_state, gamepad_last);
-  handle_autofire(port_id, KEY_B, SC_BTN_B, KEY_Y, SC_BTN_Y, gamepad_state, gamepad_last);
-  handle_autofire(port_id, KEY_C, SC_BTN_C, KEY_Z, SC_BTN_Z, gamepad_state, gamepad_last);
+  handle_turbo(port_id, KEY_A, SC_BTN_A, KEY_X, SC_BTN_X, gamepad_state, gamepad_last);
+  handle_turbo(port_id, KEY_B, SC_BTN_B, KEY_Y, SC_BTN_Y, gamepad_state, gamepad_last);
+  handle_turbo(port_id, KEY_C, SC_BTN_C, KEY_Z, SC_BTN_Z, gamepad_state, gamepad_last);
 
   Joystick[port_id].setButton(KEY_START, is_key_active(gamepad_state, SC_BTN_START));
   Joystick[port_id].setButton(KEY_MODE, is_key_active(gamepad_state, SC_BTN_MODE));
@@ -134,23 +134,23 @@ void update_joystick_autofire(const int port_id, const word gamepad_state, const
 /* Takes care of updating key states, update_joystick takes care of actually
  * sending the button states over USB.
  */
-void update_port_autofire(const int port_id) {
+void update_port_turbo(const int port_id) {
   switch (port_id) {
     case PORT_1:
       gamepad_1_state = gamepad_1.getState();
-      update_joystick_autofire((swap_ports ? PORT_2 : PORT_1), gamepad_1_state, gamepad_1_last);
+      update_joystick_turbo((swap_ports ? PORT_2 : PORT_1), gamepad_1_state, gamepad_1_last);
       gamepad_1_last = gamepad_1_state;
 
     case PORT_2:
     default:
       gamepad_2_state = gamepad_2.getState();
-      update_joystick_autofire((swap_ports ? PORT_1 : PORT_2), gamepad_2_state, gamepad_2_last);
+      update_joystick_turbo((swap_ports ? PORT_1 : PORT_2), gamepad_2_state, gamepad_2_last);
       gamepad_2_last = gamepad_2_state;
       break;
   }
 }
 
-void handle_mode_autofire() {
+void handle_mode_turbo() {
   if (millis() > pwr_timer) {
     #ifdef PWR_ACTIVITY_MIN
       fade_pwr(PWR_ACTIVITY_MIN);
@@ -162,6 +162,6 @@ void handle_mode_autofire() {
 
   debounce_joystick_key(PORT_1, KEY_MODE, false);
   for (int port_id = 0; port_id < PORT_COUNT; port_id++) {
-    update_port_autofire(port_id);
+    update_port_turbo(port_id);
   }
 }

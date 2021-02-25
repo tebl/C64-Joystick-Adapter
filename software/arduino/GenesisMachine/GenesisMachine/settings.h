@@ -33,7 +33,7 @@
 /* Specify KEY_MODE_JOYSTICK to have the alternate mode activate the autofire
  * function.
  */
-#define ALTERNATE_MODE KEY_MODE_AUTOFIRE
+#define ALTERNATE_MODE KEY_MODE_TURBO
 
 /* Uncomment this line to force the alternate mode, meaning that the magic
  * key combination requirement on startup is removed completely.

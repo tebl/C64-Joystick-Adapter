@@ -4,7 +4,7 @@
 #include "constants.h"
 #include "settings.h"
 #include "key_mode_default.h"
-#include "key_mode_autofire.h"
+#include "key_mode_turbo.h"
 #include "led_control.h"
 
 extern bool boot_done;
@@ -76,8 +76,8 @@ bool init_mode(byte mode) {
   joykey_mode = mode;
   boot_done = true;
   switch (mode) {
-    case KEY_MODE_AUTOFIRE:
-      init_mode_autofire();
+    case KEY_MODE_TURBO:
+      init_mode_turbo();
       #ifndef FORCE_ALTERNATE
         delay(BOOT_DELAY);
       #endif
@@ -93,8 +93,8 @@ bool init_mode(byte mode) {
 
 void handle_mode() {
   switch (joykey_mode) {
-    case KEY_MODE_AUTOFIRE:
-      handle_mode_autofire();
+    case KEY_MODE_TURBO:
+      handle_mode_turbo();
       break;
     
     case KEY_MODE_DEFAULT:
