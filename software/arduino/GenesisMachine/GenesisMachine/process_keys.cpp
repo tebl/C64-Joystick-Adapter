@@ -50,7 +50,7 @@ bool check_boot() {
 }
 
 void process_keys() {
-  #ifdef USB_FORCE_ALTERNATE
+  #ifdef FORCE_ALTERNATE
     if (!boot_done) init_mode(ALTERNATE_MODE);
     else handle_mode();
   #else
