@@ -7,8 +7,8 @@
 #define APP_VERSION "0.2"
 
 #define LED_PWR_MAX 128               // Maximum brightness
-#define LED_SHUTOFF 5000              // Time after boot when fade starts
-#define LED_FADE_SPEED 500            // Delay between LED fade steps
+#define LED_SHUTOFF 3000              // Time after boot when fade starts
+#define LED_FADE_SPEED 250            // Delay between LED fade steps
 #define LED_FADE_DELAY 1000           // Time before fading starts
 #define LED_STEP 4                    // Change per step when fading
 #define LED_FLASH_DELAY 100           // Delay between blink steps
@@ -47,5 +47,5 @@
  */
 #define AUTO_FIRE_PERIOD_ON 80
 #define AUTO_FIRE_PERIOD_OFF 80
-#define RAPID_FIRE_PERIOD_ON 60
-#define RAPID_FIRE_PERIOD_OFF 60
+#define RAPID_FIRE_PERIOD_ON 40
+#define RAPID_FIRE_PERIOD_OFF 40

@@ -18,6 +18,7 @@ extern word gamepad_2_state;
 extern word gamepad_2_last;
 
 unsigned long autofire_timer[PORT_COUNT][3];
+bool autofire_enabled[PORT_COUNT][3];
 extern byte key_state[PORT_COUNT][KEY_COUNT];
 
 void init_mode_turbo() {
@@ -52,27 +53,35 @@ void set_linked_led(const bool value) {
   #endif
 }
 
-void set_cycle_on(const int port_id, const byte key_id, const int period) {
-  set_linked_led(true);
-  Joystick[port_id].setButton(key_id, true);
+/* Sets a specific button state and updates timers for the next transition,
+ * this should only be used with the rapid fire and autofire modes.
+ */
+void set_state(const int port_id, const byte key_id, byte cycle, const int period) {
+  set_linked_led(cycle == KEY_STATE_ON_CYCLE);
+  Joystick[port_id].setButton(key_id, (cycle == KEY_STATE_ON_CYCLE));
   autofire_timer[port_id][key_id] = millis() + period;
-  key_state[port_id][key_id] = KEY_STATE_ON_CYCLE;
+  key_state[port_id][key_id] = cycle;
 }
 
-void set_cycle_off(const int port_id, const byte key_id, const int period) {
-  set_linked_led(false);
+void flip_state(const int port_id, const byte key_id, const int period_on, const int period_off) {
+  if (key_state[port_id][key_id] == KEY_STATE_ON_CYCLE) set_state(port_id, key_id, KEY_STATE_OFF_CYCLE, period_off);
+  else set_state(port_id, key_id, KEY_STATE_ON_CYCLE, period_on);
+}
+
+/* Clear key state, this is mainly just to ensure that we return to a neutral
+ * state after turbo modes have been used.
+ */
+void clear_state(const int port_id, const byte key_id) {
+  if (key_state[port_id][key_id] != KEY_STATE_NEUTRAL) {
+    set_linked_led(false);
+    key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
+  }
   Joystick[port_id].setButton(key_id, false);
-  autofire_timer[port_id][key_id] = millis() + period;
-  key_state[port_id][key_id] = KEY_STATE_OFF_CYCLE;
-}
-
-void flip_cycle(const int port_id, const byte key_id, const int period_on, const int period_off) {
-  if (key_state[port_id][key_id] == KEY_STATE_ON_CYCLE) set_cycle_off(port_id, key_id, period_off);
-  else set_cycle_on(port_id, key_id, period_on);
 }
 
 /* Handle fire button pair, ABC should be processed normally and take precedence
- * while XYZ will serve as rapid fire buttons instead.
+ * while XYZ will serve as rapid fire buttons instead. Autofire modes will only
+ * be active if no other button has been pushed.
  */
 void handle_turbo(const int port_id, const byte key_id, const word key_mask, const byte key_id2, const word key_mask2, const word gamepad_state, const word gamepad_last) {
   if (is_key_active(gamepad_state, key_mask)) {
@@ -83,24 +92,40 @@ void handle_turbo(const int port_id, const byte key_id, const word key_mask, con
     if (is_key_active(gamepad_state, key_mask2)) {
       switch (key_state[port_id][key_id]) {
         case KEY_STATE_NEUTRAL:
-          set_cycle_on(port_id, key_id, RAPID_FIRE_PERIOD_ON);
+          set_state(port_id, key_id, KEY_STATE_ON_CYCLE, RAPID_FIRE_PERIOD_ON);
           break;
         
         case KEY_STATE_ON_CYCLE:
         case KEY_STATE_OFF_CYCLE:
         default:
           if (millis() > autofire_timer[port_id][key_id]) {
-            flip_cycle(port_id, key_id, RAPID_FIRE_PERIOD_ON, RAPID_FIRE_PERIOD_OFF);
+            flip_state(port_id, key_id, RAPID_FIRE_PERIOD_ON, RAPID_FIRE_PERIOD_OFF);
           }
           break;
       }
     } else {
-      /* Clear key states in case turbo was previously active */
-      if (key_state[port_id][key_id] != KEY_STATE_NEUTRAL) {
-        set_linked_led(false);
-        key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
+      /* Toggle autofire when mode is held and we've detected a released fire
+       * button (ie. it is on in the last gamestate and not on anymore).
+       */
+      if (is_key_active(gamepad_state, SC_BTN_MODE)) {
+        if (!is_key_active(gamepad_state, key_mask) && is_key_active(gamepad_last, key_mask)) {
+          autofire_enabled[port_id][key_id] = !autofire_enabled[port_id][key_id];
+        }
       }
-      Joystick[port_id].setButton(key_id, false);
+
+      /* Handle auto fire */
+      if (autofire_enabled[port_id][key_id]) {
+        if (millis() > autofire_timer[port_id][key_id]) {
+          flip_state(port_id, key_id, AUTO_FIRE_PERIOD_ON, AUTO_FIRE_PERIOD_OFF);
+        }
+      } else {
+        /* Clear key state when button not used, this only run when it is not
+         * under control by the alternate fire modes (auto fire or rapid fire).
+         * Ensures that we don't end up with a button that is stuck in the held
+         * position.
+         */
+        clear_state(port_id, key_id);
+      }
     }
   }
 }
@@ -129,7 +154,7 @@ void update_joystick_turbo(const int port_id, const word gamepad_state, const wo
   handle_turbo(port_id, KEY_C, SC_BTN_C, KEY_Z, SC_BTN_Z, gamepad_state, gamepad_last);
 
   Joystick[port_id].setButton(KEY_START, is_key_active(gamepad_state, SC_BTN_START));
-  Joystick[port_id].setButton(KEY_MODE, is_key_active(gamepad_state, SC_BTN_MODE));
+  //Joystick[port_id].setButton(KEY_MODE, is_key_active(gamepad_state, SC_BTN_MODE));
 
   Joystick[port_id].sendState();
 }
