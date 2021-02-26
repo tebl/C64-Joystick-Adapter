@@ -30,8 +30,10 @@
 #define BOOT_MODE_THRESHOLD 1000
 #define BOOT_DELAY 1000
 
-/* Specify KEY_MODE_JOYSTICK to have the alternate mode activate the autofire
- * function.
+/* Specify ALTERNATE_MODE to customize which mode is used when the mode button
+ * on the device is during powerup. At the moment there is probably no
+ * alternative so leave it at this setting. See FORCE_ALTERNATE to force this
+ * mode on powerup.
  */
 #define ALTERNATE_MODE KEY_MODE_TURBO
 
@@ -50,7 +52,7 @@
  * buttons so that they function as rapid fire buttons for ABC. Auto fire is
  * available in both modes, it is enabled by holding mode and pushing the ABC
  * buttons (disables the mode button). Remove ENABLE_AUTO_FIRE below to disable
- * this, allowing the mode button to be used as normal.
+ * this, allowing the mode button to be used as a "normal" button.
  */
 #define ENABLE_AUTO_FIRE
 #define AUTO_FIRE_PERIOD_ON 80
