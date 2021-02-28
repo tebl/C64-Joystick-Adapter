@@ -35,12 +35,13 @@
  * alternative so leave it at this setting. See FORCE_ALTERNATE to force this
  * mode on powerup.
  */
+#define PRIMARY_MODE KEY_MODE_DEFAULT
 #define ALTERNATE_MODE KEY_MODE_TURBO
 
 /* Uncomment one of these lines to force a specific mode, meaning that the
  * the startup timer allowing you to hold in the mode button is removed.
  */
-//#define FORCE_DEFAULT
+#define FORCE_PRIMARY
 //#define FORCE_ALTERNATE
 
 /* These numbers tune the time autofire and rapid fire spend in each of the

@@ -39,7 +39,7 @@ bool check_boot() {
       }
     }
 
-    return init_mode(KEY_MODE_DEFAULT);
+    return init_mode(PRIMARY_MODE);
   } else {
     /* Check if mode is continuously held down  */
     if (digitalRead(PIN_MODE) == LOW) {
@@ -54,8 +54,8 @@ void process_keys() {
     if (!boot_done) init_mode(ALTERNATE_MODE);
     else handle_mode();
   #else
-    #ifdef FORCE_DEFAULT
-      if (!boot_done) init_mode(KEY_MODE_DEFAULT);
+    #ifdef FORCE_PRIMARY
+      if (!boot_done) init_mode(PRIMARY_MODE);
       else handle_mode();
     #else
       if (!boot_done) check_boot();

@@ -10,7 +10,7 @@
 extern bool boot_done;
 
 unsigned long pwr_timer;
-int joykey_mode = KEY_MODE_DEFAULT;
+int joykey_mode = PRIMARY_MODE;
 bool swap_ports = false;
 
 unsigned long autofire_timer[PORT_COUNT][KEY_COUNT];
