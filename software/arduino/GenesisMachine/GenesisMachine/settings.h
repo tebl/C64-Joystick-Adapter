@@ -4,7 +4,7 @@
  * Settings
  */
 #define APP_TITLE "GenesisMachine"
-#define APP_VERSION "0.3"
+#define APP_VERSION "0.4"
 
 #define LED_PWR_MAX 128               // Maximum brightness
 #define LED_SHUTOFF 3000              // Time after boot when fade starts
@@ -14,6 +14,22 @@
 #define LED_FLASH_DELAY 100           // Delay between blink steps
 #define BOOT_MODE_THRESHOLD 1000      // Time needed before alternate mode
 #define DEBOUNCE_DELAY 10             // Debounce delay for keys
+
+/* These settings changes the default behavior, mainly to make the device
+ * feel more familiar to people using a Mega Drive adapter with any of the 
+ * Commodore computers (either C64 Joystick Switcher or
+ * OpenC64OpenMegaDrivePadAdapter).
+ * 
+ * SWAP_PORTS makes port 2 the main controller port similar to what is, 
+ * almost, standard on the Commodore 64. C_TO_JUMP disables up direction
+ * on the gamepad, reassigns C button to jump instead (makes things easier
+ * in racing games and platformers) - this can also be toggled by pushing the
+ * MODE button on the device itself. Use SWAP_ABXY to change button order,
+ * this - again - to match the mentioned adapters.
+ */
+#define SWAP_PORTS                    // Swap around ports 1/2
+//#define C_TO_JUMP                   // C is now the UP button, MODE to toggle.
+#define SWAP_ABXY                     // Swap A/B, X/Y buttons (if available).
 
 /* When uncommented this allows the PWR light to show joystick activity,
  * it'll grow brighter with movement and fade over time.
@@ -41,7 +57,7 @@
 /* Uncomment one of these lines to force a specific mode, meaning that the
  * the startup timer allowing you to hold in the mode button is removed.
  */
-#define FORCE_PRIMARY
+//#define FORCE_PRIMARY
 //#define FORCE_ALTERNATE
 
 /* These numbers tune the time autofire and rapid fire spend in each of the

@@ -9,6 +9,8 @@
 extern unsigned long pwr_timer;
 extern Joystick_ Joystick[PORT_COUNT];
 extern bool swap_ports;
+extern bool c_to_jump;
+extern bool swap_abxy;
 
 extern SegaController gamepad_1;
 extern word gamepad_1_state;
@@ -87,16 +89,31 @@ void update_joystick(const int port_id, const word gamepad_state, const word gam
   else if (is_key_active(gamepad_state, SC_BTN_RIGHT)) Joystick[port_id].setXAxis(1);
   else Joystick[port_id].setXAxis(0);
 
-  if (is_key_active(port_id, SC_BTN_UP) && is_key_active(port_id, SC_BTN_DOWN)) Joystick[port_id].setYAxis(0);
-  else if (is_key_active(gamepad_state, SC_BTN_UP)) Joystick[port_id].setYAxis(-1);
-  else if (is_key_active(gamepad_state, SC_BTN_DOWN)) Joystick[port_id].setYAxis(1);
-  else Joystick[port_id].setYAxis(0);
+  /* Replace UP direction with the C button */
+  if (c_to_jump) {
+    if (is_key_active(gamepad_state, SC_BTN_C)) Joystick[port_id].setYAxis(-1);
+    else if (is_key_active(gamepad_state, SC_BTN_DOWN)) Joystick[port_id].setYAxis(1);
+    else Joystick[port_id].setYAxis(0);
+  } else {
+    if (is_key_active(port_id, SC_BTN_UP) && is_key_active(port_id, SC_BTN_DOWN)) Joystick[port_id].setYAxis(0);
+    else if (is_key_active(gamepad_state, SC_BTN_UP)) Joystick[port_id].setYAxis(-1);
+    else if (is_key_active(gamepad_state, SC_BTN_DOWN)) Joystick[port_id].setYAxis(1);
+    else Joystick[port_id].setYAxis(0);
+    handle_autofire(port_id, KEY_C, SC_BTN_C, gamepad_state, gamepad_last);
+  }
 
-  handle_autofire(port_id, KEY_A, SC_BTN_A, gamepad_state, gamepad_last);
-  handle_autofire(port_id, KEY_B, SC_BTN_B, gamepad_state, gamepad_last);
-  handle_autofire(port_id, KEY_C, SC_BTN_C, gamepad_state, gamepad_last);
-  handle_autofire(port_id, KEY_X, SC_BTN_X, gamepad_state, gamepad_last);
-  handle_autofire(port_id, KEY_Y, SC_BTN_Y, gamepad_state, gamepad_last);
+  /* Swap A/B buttons around */
+  if (swap_abxy) {
+    handle_autofire(port_id, KEY_A, SC_BTN_B, gamepad_state, gamepad_last);
+    handle_autofire(port_id, KEY_B, SC_BTN_A, gamepad_state, gamepad_last);
+    handle_autofire(port_id, KEY_X, SC_BTN_Y, gamepad_state, gamepad_last);
+    handle_autofire(port_id, KEY_Y, SC_BTN_X, gamepad_state, gamepad_last);
+  } else {
+    handle_autofire(port_id, KEY_A, SC_BTN_A, gamepad_state, gamepad_last);
+    handle_autofire(port_id, KEY_B, SC_BTN_B, gamepad_state, gamepad_last);
+    handle_autofire(port_id, KEY_X, SC_BTN_X, gamepad_state, gamepad_last);
+    handle_autofire(port_id, KEY_Y, SC_BTN_Y, gamepad_state, gamepad_last);
+  }
   handle_autofire(port_id, KEY_Z, SC_BTN_Z, gamepad_state, gamepad_last);
   handle_autofire(port_id, KEY_START, SC_BTN_START, gamepad_state, gamepad_last);
   #ifndef ENABLE_AUTO_FIRE

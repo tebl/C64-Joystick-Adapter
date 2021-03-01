@@ -12,6 +12,8 @@ extern bool boot_done;
 unsigned long pwr_timer;
 int joykey_mode = PRIMARY_MODE;
 bool swap_ports = false;
+bool c_to_jump = false;
+bool swap_abxy = false;
 
 unsigned long autofire_timer[PORT_COUNT][KEY_COUNT];
 bool autofire_enabled[PORT_COUNT][KEY_COUNT];
@@ -78,6 +80,17 @@ word gamepad_2_last = 0;
 bool init_mode(byte mode) {
   joykey_mode = mode;
   boot_done = true;
+
+  #ifdef C_TO_JUMP
+    c_to_jump = true;
+  #endif
+  #ifdef SWAP_PORTS
+    swap_ports = true;
+  #endif
+  #ifdef SWAP_ABXY
+    swap_abxy = true;
+  #endif
+
   switch (mode) {
     case KEY_MODE_TURBO:
       init_mode_turbo();
@@ -181,7 +194,7 @@ void debounce_joystick_key(const int port_id, const byte key_id, const bool inve
 
           if (port_id == PORT_1 && key_id == KEY_MODE) {
             flash_pwr(3);
-            swap_ports = !swap_ports;
+            c_to_jump = !c_to_jump;
           } else {
             #ifdef PWR_ACTIVITY
               boost_pwr();
