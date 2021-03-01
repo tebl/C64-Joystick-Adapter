@@ -1,2 +1,4 @@
-void init_mode_default();
-void handle_mode_default();
+namespace mode_default {
+    void init_mode();
+    void handle_mode();
+}

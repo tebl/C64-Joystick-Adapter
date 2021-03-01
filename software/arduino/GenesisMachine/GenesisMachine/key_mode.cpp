@@ -91,9 +91,13 @@ bool init_mode(byte mode) {
     swap_abxy = true;
   #endif
 
+  /* Turn on LED if primary mode, flash on alternate mode instead. */
+  if (mode == PRIMARY_MODE) set_pwr(true);
+  else flash_pwr(3);
+
   switch (mode) {
     case KEY_MODE_TURBO:
-      init_mode_turbo();
+      mode_turbo::init_mode();
       #ifndef FORCE_ALTERNATE
         delay(BOOT_DELAY);
       #endif
@@ -101,7 +105,7 @@ bool init_mode(byte mode) {
     
     case KEY_MODE_DEFAULT:
     default:
-      init_mode_default();
+      mode_default::init_mode();
       break;
   }
   return true;
@@ -110,12 +114,12 @@ bool init_mode(byte mode) {
 void handle_mode() {
   switch (joykey_mode) {
     case KEY_MODE_TURBO:
-      handle_mode_turbo();
+      mode_turbo::handle_mode();
       break;
     
     case KEY_MODE_DEFAULT:
     default:
-      handle_mode_default();
+      mode_default::handle_mode();
       break;
   }
 }

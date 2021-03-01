@@ -31,7 +31,7 @@
  */
 #define SWAP_PORTS                    // Swap around ports 1/2
 //#define C_TO_JUMP                   // C is now the UP button, MODE to toggle.
-#define SWAP_ABXY                     // Swap A/B, X/Y buttons (if available).
+//#define SWAP_ABXY                   // Swap A/B, X/Y buttons (if available).
 
 /* When uncommented this allows the PWR light to show joystick activity,
  * it'll grow brighter with movement and fade over time.
@@ -49,9 +49,10 @@
 #define BOOT_DELAY 1000
 
 /* Specify ALTERNATE_MODE to customize which mode is used when the mode button
- * on the device is during powerup. At the moment there is probably no
- * alternative so leave it at this setting. See FORCE_ALTERNATE to force this
- * mode on powerup.
+ * on the device is held during powerup. At the moment there is probably no
+ * alternative so leave it at this setting - or you could swap the values
+ * around if you prefer. See FORCE_PRIMARY / FORCE_ALTERNATE to skip the
+ * selection process on bootup.
  */
 #define PRIMARY_MODE KEY_MODE_DEFAULT
 #define ALTERNATE_MODE KEY_MODE_TURBO
