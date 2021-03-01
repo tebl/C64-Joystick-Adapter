@@ -25,7 +25,9 @@
  * on the gamepad, reassigns C button to jump instead (makes things easier
  * in racing games and platformers) - this can also be toggled by pushing the
  * MODE button on the device itself. Use SWAP_ABXY to change button order,
- * this - again - to match the mentioned adapters.
+ * this - again - to match the mentioned adapters. See ENABLE_AUTO_FIRE at the
+ * bottom if looking for a way to use the mode button on the controller as
+ * normal.
  */
 #define SWAP_PORTS                    // Swap around ports 1/2
 //#define C_TO_JUMP                   // C is now the UP button, MODE to toggle.
