@@ -144,6 +144,7 @@ namespace mode_turbo {
         gamepad_1_state = gamepad_1.getState();
         update_joystick_turbo((swap_ports ? PORT_2 : PORT_1), gamepad_1_state, gamepad_1_last);
         gamepad_1_last = gamepad_1_state;
+        break;
 
       case PORT_2:
       default:

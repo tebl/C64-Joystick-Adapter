@@ -131,6 +131,7 @@ namespace mode_default {
         gamepad_1_state = gamepad_1.getState();
         update_joystick((swap_ports ? PORT_2 : PORT_1), gamepad_1_state, gamepad_1_last);
         gamepad_1_last = gamepad_1_state;
+        break;
 
       case PORT_2:
       default:
