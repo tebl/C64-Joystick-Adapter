@@ -41,7 +41,7 @@ static const uint8_t _hidReportDescriptor[] PROGMEM = {
       0x45, 0x01,               // Physical_MAXIMUM (1)
       0x05, 0x09,               // USAGE_PAGE (Button)
       0x19, 0x01,               // USAGE_MINIMUM (Button 1)
-      0x29, 0x10,               // USAGE_MAXIMUM (Button 8)
+      0x29, 0x08,               // USAGE_MAXIMUM (Button 8)
       0x81, 0x02,               // Input (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit)
       
       0x06, 0x00, 0xff,         // Usage page (Vendor-Defined 1)

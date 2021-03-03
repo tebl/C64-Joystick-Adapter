@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <SegaController.h>
+#include "the64.h"
 #include "joystick.h"
 #include "constants.h"
 #include "settings.h"
@@ -9,7 +10,7 @@
 extern unsigned long pwr_timer;
 extern bool swap_ports;
 extern bool c_to_jump;
-extern bool swap_abxy;
+extern bool swap_ab;
 
 extern SegaController gamepad_1;
 extern word gamepad_1_state;
@@ -62,7 +63,7 @@ namespace mode_default {
         }
       }
     #else
-      Joystick[port_id].setButton(key_id, is_key_active(gamepad_state, key_mask));
+      Joystick.button_press(key_code);
     #endif
   }
 
@@ -77,30 +78,30 @@ namespace mode_default {
 
     if (is_key_active(gamepad_state, SC_BTN_LEFT)) Joystick.left();
     if (is_key_active(gamepad_state, SC_BTN_RIGHT)) Joystick.right();
-    if (is_key_active(gamepad_state, SC_BTN_UP)) Joystick.up();
     if (is_key_active(gamepad_state, SC_BTN_DOWN)) Joystick.down();
 
     /* Replace UP direction with the C button */
-    /*
-    if (c_to_jump) {
-      if (is_key_active(gamepad_state, SC_BTN_C)) Joystick[port_id].setYAxis(-1);
-      else if (is_key_active(gamepad_state, SC_BTN_DOWN)) Joystick[port_id].setYAxis(1);
-      else Joystick[port_id].setYAxis(0);
-    } else {
-      if (is_key_active(port_id, SC_BTN_UP) && is_key_active(port_id, SC_BTN_DOWN)) Joystick[port_id].setYAxis(0);
-      else if (is_key_active(gamepad_state, SC_BTN_UP)) Joystick[port_id].setYAxis(-1);
-      else if (is_key_active(gamepad_state, SC_BTN_DOWN)) Joystick[port_id].setYAxis(1);
-      else Joystick[port_id].setYAxis(0);
-      handle_autofire(port_id, KEY_C, SC_BTN_C, gamepad_state, gamepad_last);
-    }
-    */
+    if (!c_to_jump && is_key_active(gamepad_state, SC_BTN_UP)) Joystick.up();
+    if (is_key_active(gamepad_state, SC_BTN_C)) Joystick.up();
 
-    handle_autofire(port_id, KEY_A, 0x40, SC_BTN_A, gamepad_state, gamepad_last);           // Fire button
-    //handle_autofire(port_id, KEY_B, SC_BTN_B, gamepad_state, gamepad_last);
-    handle_autofire(port_id, KEY_X, 0x4, SC_BTN_X, gamepad_state, gamepad_last);            // A
-    handle_autofire(port_id, KEY_Y, 0x2, SC_BTN_Y, gamepad_state, gamepad_last);            // B
-    handle_autofire(port_id, KEY_Z, 0x0100, SC_BTN_Z, gamepad_state, gamepad_last);         // C
-    handle_autofire(port_id, KEY_START, 0x0200, SC_BTN_START, gamepad_state, gamepad_last); // Menu
+    /* Swap left and right fire button */
+    if (swap_ab) {
+      handle_autofire(port_id, KEY_A, THE64_BTN_FIRE_R, SC_BTN_A, gamepad_state, gamepad_last); // Fire Left
+      handle_autofire(port_id, KEY_B, THE64_BTN_FIRE_R, SC_BTN_B, gamepad_state, gamepad_last); // Fire Right
+    } else {
+      handle_autofire(port_id, KEY_A, THE64_BTN_FIRE_L, SC_BTN_A, gamepad_state, gamepad_last); // Fire Left
+      handle_autofire(port_id, KEY_B, THE64_BTN_FIRE_R, SC_BTN_B, gamepad_state, gamepad_last); // Fire Right
+    }
+
+    if (is_key_active(gamepad_state, SC_BTN_MODE)) {
+      if (is_key_active(gamepad_state, SC_BTN_X)) Joystick.button_press(THE64_BTN_TL);        // TL
+      if (is_key_active(gamepad_state, SC_BTN_Z)) Joystick.button_press(THE64_BTN_TR);        // TR
+    } else {
+      if (is_key_active(gamepad_state, SC_BTN_X)) Joystick.button_press(THE64_BTN_A);         // A
+      if (is_key_active(gamepad_state, SC_BTN_Z)) Joystick.button_press(THE64_BTN_C);         // C
+    }
+    if (is_key_active(gamepad_state, SC_BTN_Y)) Joystick.button_press(THE64_BTN_B);           // B
+    if (is_key_active(gamepad_state, SC_BTN_START)) Joystick.button_press(THE64_BTN_MENU);    // Menu
 
     Joystick.usb_update();
   }

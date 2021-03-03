@@ -10,7 +10,7 @@ extern unsigned long pwr_timer;
 extern Joystick_ Joystick[PORT_COUNT];
 extern bool swap_ports;
 extern bool c_to_jump;
-extern bool swap_abxy;
+extern bool swap_ab;
 
 extern SegaController gamepad_1;
 extern word gamepad_1_state;
@@ -120,7 +120,7 @@ namespace mode_turbo {
     }
 
     /* Swap A/B buttons around */
-    if (swap_abxy) {
+    if (swap_ab) {
       handle_turbo(port_id, KEY_A, SC_BTN_B, KEY_X, SC_BTN_Y, gamepad_state, gamepad_last);
       handle_turbo(port_id, KEY_B, SC_BTN_A, KEY_Y, SC_BTN_X, gamepad_state, gamepad_last);    
     } else {

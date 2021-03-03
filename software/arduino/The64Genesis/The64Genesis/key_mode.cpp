@@ -13,7 +13,7 @@ unsigned long pwr_timer;
 int joykey_mode = PRIMARY_MODE;
 bool swap_ports = false;
 bool c_to_jump = false;
-bool swap_abxy = false;
+bool swap_ab = false;
 
 unsigned long autofire_timer[PORT_COUNT][KEY_COUNT];
 bool autofire_enabled[PORT_COUNT][KEY_COUNT];
