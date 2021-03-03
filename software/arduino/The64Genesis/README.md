@@ -2,6 +2,8 @@
 
 I picked up a The64 Mini on a whim and a sale, more than likely because someone in the shop had tried it out at some point and come to some conclusions regarding the quality of the thing. The machine itself is super-cute with its less than functional keyboard and breadbox-y shape, but the reviews really did not go far enough in explaining exactly how dreadful the controller really is. Commodore 64 games are hard enough, even with a sensible joystick so I needed something else.
 
+![](https://github.com/tebl/C64-Joystick-Adapter/raw/main/gallery/2021-02-26%2001.48.15.jpg)
+
 I started out with the GenesisMachine firmware I made earlier, then discovered that none of the keys worked since the Mini have some sort of controller whitelist and well-behaved Arduino Pro Micro solutions simply arent't on the list - so I did the next best thing; copy the relevant bits from people who actually know what they are doing. In this case relief was found in the form of an [article](https://www.tsb.space/projects/c64-mini-arcade2usb-converter/) written by TSB, it links further to his [github](https://github.com/iamtsb/arcade2usb-converter)-repository.
 
 # Controller layout
@@ -12,7 +14,11 @@ The resulting adapter have buttons laid out according to the illustration below,
 Playing Commodore 64 games on a gamepad isn't always easy though, especially the precision needed in a lot of platformers and a few racing games will be harder to do perform on a gamepad. For this reason, most of the Mega Drive/Genesis adapters for the real Commodore 64 comes with the ability to use the C button instead of the UP button on the gamepad. Holding MODE and pushing MENU, alternatively pushing MODE on the C64 Joystick Adapter, enables this mode of operation. Note that this replaces the turbo functionality, D-pad UP will be deactivated to avoid accidental presses.
 
 # Buiding The64Genesis
-The instructions for building has been provided in the main project, for the most part this includes installing the controller ports and soldering the jumpers for Sega pinouts. The following sections mainly deal with installing the firmware on a suitable Arduino Pro Micro clone.
+The instructions for building has been provided in the main project, for the most part this includes installing at least controller port 2 and soldering the jumpers for Sega pinouts. Switch and LED (with 330 ohm resistor) can be considered optional if you don't have them on hand, but it is recommended as it makes things easier. The location of the soldered jumpers can be seen below.
+
+![Sega Jumpers](https://github.com/tebl/C64-Joystick-Adapter/raw/main/gallery/adapter_sega.jpg)
+
+The following sections mainly deal with installing the firmware on a suitable Arduino Pro Micro clone.
 
 ## Firmware installation
 The firmware is supplied in the form of an Arduino-sketch, you'll find it under The64Genesis subfolder. The following subsections goes through setting up additional libraries needed, changing the Arduino board identifier needed and how to change any settings (should you want to do so).
@@ -39,7 +45,7 @@ Given the example below, you would enable the autofire functionality by removing
 #define RAPID_FIRE_PERIOD_OFF 40
 ```
 
-**NB!** Note that you'll have to recompile and upload the new version of the firmware every time you make changes to it.
+**NB!** Note that you'll have to recompile and upload the new version of the firmware every time you make changes to it. There's no magic wireless version, unfortunately. I might add a way of storing the settings in the Arduino EEPROM, but I'm not sure the world needs another adapter with 30-page listing of incantations needed to change a setting - you have the code so you can change what you want.
 
 # Design caveats
 I don't know of a way that the mini can support more than one controller this way, so with this firmware only Port 2 will be active. Comment out the SWAP_PORTS line in *settings.h* if you want to plug your Sega Mega Drive controller into port 1 instead. The firmware will function as normal with only a 3-button Sega Master System controller, but in order to navigate all the features of The64 Mini you'll want a 6-button controller.
