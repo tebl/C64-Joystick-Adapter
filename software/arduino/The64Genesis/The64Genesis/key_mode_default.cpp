@@ -45,12 +45,12 @@ namespace mode_default {
   /* Handle fire button, a normal press of the button will always take precedence
   * over auto fire. Autofire can be activated by holding MODE and then pushing
   * the button. */
-  void handle_autofire(const int port_id, const byte key_id, const uint16_t the64_code, const word key_mask, const word gamepad_state, const word gamepad_last) {
+  void handle_autofire(const int port_id, const byte key_id, const uint16_t the64_code, const word sc_code, const word gamepad_state, const word gamepad_last) {
     #ifdef ENABLE_AUTO_FIRE
       if (is_key_active(gamepad_state, SC_BTN_MODE)) {
         /* Toggle autofire mode at the release of a button, but only do so while
         * the MODE button is being held on the controller. */
-        if (!is_key_active(gamepad_state, key_mask) && is_key_active(gamepad_last, key_mask)) {
+        if (!is_key_active(gamepad_state, sc_code) && is_key_active(gamepad_last, sc_code)) {
           autofire_enabled[port_id][key_id] = !autofire_enabled[port_id][key_id];
         }
 
@@ -58,15 +58,64 @@ namespace mode_default {
         check_autofire_timers(port_id, key_id, the64_code);
       } else {
         /* Process button presses normally, run autofire if not being held. */
-        if (is_key_active(gamepad_state, key_mask)) {
+        if (is_key_active(gamepad_state, sc_code)) {
           Joystick.button_press(the64_code);
         } else {
           check_autofire_timers(port_id, key_id, the64_code);
         }
       }
     #else
-      Joystick.button_press(the64_code);
+      if (is_key_active(gamepad_state, sc_code)) Joystick.button_press(the64_code);
     #endif
+  }
+
+  /* An attempt to add a separate rapid fire button while maintaining the
+   * autofire functionality. */
+  void handle_multifire(const int port_id, const byte key_id, const uint16_t the64_code, const word sc_code, const word sc_rapid, const word gamepad_state, const word gamepad_last) {
+    if (is_key_active(gamepad_state, sc_code)) {
+      /* Handle regular button */
+      Joystick.button_press(the64_code);
+    } else {
+      /* Handle turbo button */
+      if (is_key_active(gamepad_state, sc_rapid)) {
+        switch (key_state[port_id][key_id]) {
+          case KEY_STATE_NEUTRAL:
+            set_state(port_id, key_id, the64_code, KEY_STATE_ON_CYCLE, RAPID_FIRE_PERIOD_ON);
+            break;
+          
+          case KEY_STATE_ON_CYCLE:
+            Joystick.button_press(the64_code);
+            break;
+          case KEY_STATE_OFF_CYCLE:
+          default:
+            break;
+        }
+        /* Check if timer has been overrun */
+        if (millis() > autofire_timer[port_id][key_id]) {
+          flip_state(port_id, key_id, the64_code, RAPID_FIRE_PERIOD_ON, RAPID_FIRE_PERIOD_OFF);
+        }
+      } else {
+        #ifdef ENABLE_AUTO_FIRE
+          if (is_key_active(gamepad_state, SC_BTN_MODE)) {
+            /* Toggle autofire mode at the release of a button, but only do so while
+            * the MODE button is being held on the controller. */
+            if (!is_key_active(gamepad_state, sc_code) && is_key_active(gamepad_last, sc_code)) {
+              autofire_enabled[port_id][key_id] = !autofire_enabled[port_id][key_id];
+            }
+
+            /* Keep auto fire running */
+            check_autofire_timers(port_id, key_id, the64_code);
+          } else {
+            /* Process button presses normally, run autofire if not being held. */
+            if (is_key_active(gamepad_state, sc_code)) {
+              Joystick.button_press(the64_code);
+            } else {
+              check_autofire_timers(port_id, key_id, the64_code);
+            }
+          }
+        #endif
+      }
+    }
   }
 
   /* Update and send the joystick state to the computer. */
@@ -83,16 +132,27 @@ namespace mode_default {
     if (is_key_active(gamepad_state, SC_BTN_DOWN)) Joystick.down();
 
     /* Replace UP direction with the C button */
-    if (!c_to_jump && is_key_active(gamepad_state, SC_BTN_UP)) Joystick.up();
-    if (is_key_active(gamepad_state, SC_BTN_C)) Joystick.up();
+    if (c_to_jump) {
+      if (is_key_active(gamepad_state, SC_BTN_C)) Joystick.up();
+    } else {
+      if (is_key_active(gamepad_state, SC_BTN_UP)) Joystick.up();
+    }
 
-    /* Swap left and right fire button */
+    /* Handle AB buttons as LR, swap if configured to do so. Note that C will
+     * be used as a rapid fire version of whatever button B is used for, but
+     * only as long as C isn't used for jumping. */
     if (swap_ab) {
       handle_autofire(port_id, KEY_A, THE64_BTN_FIRE_R, SC_BTN_A, gamepad_state, gamepad_last); // Fire Left
-      handle_autofire(port_id, KEY_B, THE64_BTN_FIRE_L, SC_BTN_B, gamepad_state, gamepad_last); // Fire Right
+
+      /* Use C for rapid fire if not using it to jump */
+      if (c_to_jump) handle_autofire(port_id, KEY_B, THE64_BTN_FIRE_L, SC_BTN_B, gamepad_state, gamepad_last);
+      else handle_multifire(port_id, KEY_B, THE64_BTN_FIRE_L, SC_BTN_B, SC_BTN_C, gamepad_state, gamepad_last);
     } else {
       handle_autofire(port_id, KEY_A, THE64_BTN_FIRE_L, SC_BTN_A, gamepad_state, gamepad_last); // Fire Left
-      handle_autofire(port_id, KEY_B, THE64_BTN_FIRE_R, SC_BTN_B, gamepad_state, gamepad_last); // Fire Right
+
+      /* Use C for rapid fire if not using it to jump */
+      if (c_to_jump) handle_autofire(port_id, KEY_B, THE64_BTN_FIRE_R, SC_BTN_B, gamepad_state, gamepad_last);
+      else handle_multifire(port_id, KEY_B, THE64_BTN_FIRE_R, SC_BTN_B, SC_BTN_C, gamepad_state, gamepad_last);
     }
 
     if (is_key_active(gamepad_state, SC_BTN_MODE)) {

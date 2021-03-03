@@ -4,7 +4,7 @@
  * Settings
  */
 #define APP_TITLE "The64Genesis"
-#define APP_VERSION "0.1"
+#define APP_VERSION "0.2"
 
 #define LED_PWR_MAX 128               // Maximum brightness
 #define LED_SHUTOFF 3000              // Time after boot when fade starts
@@ -30,8 +30,9 @@
  * normal.
  */
 #define SWAP_PORTS                    // Swap around ports 1/2
-//#define C_TO_JUMP                   // C is now the UP button, MODE to toggle.
-#define SWAP_AB                     // Swap A/B
+//#define C_TO_JUMP                   // Defines if C to jump is the default
+                                      // way to push up, MODE toggles.
+#define SWAP_AB                       // Swap A/B
 
 /* When uncommented this allows the PWR light to show joystick activity,
  * it'll grow brighter with movement and fade over time.

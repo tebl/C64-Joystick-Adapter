@@ -207,6 +207,6 @@ bool is_waiting_release(const int port_id, const byte key_id) {
  * bits by using the bit mask supplied and returning whether we get a non-
  * zero result. Key masks are defined within the SegaController library.
  */
-bool is_key_active(const word gamepad_state, const word key_mask) {
-  return (gamepad_state & key_mask) > 0;
+bool is_key_active(const word gamepad_state, const word sc_code) {
+  return (gamepad_state & sc_code) > 0;
 }
