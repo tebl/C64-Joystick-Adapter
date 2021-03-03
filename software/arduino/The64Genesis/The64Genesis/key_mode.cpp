@@ -151,6 +151,15 @@ void clear_key(const int port_id, const byte key_id) {
   key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
 }
 
+/* This is called when pushing the mode button on the device itself. Within
+ * the The64Genesis firmware, this is used to toggle whether the UP direction
+ * should be replaced by the C-button.
+ */
+void toggle_mode() {
+  flash_pwr(3);
+  c_to_jump = !c_to_jump;
+}
+
 /* This might seem ridiculously complicated for reading a single button, and
  * you're definitely right! Function was copied entirely from JoyConverter with
  * all its complexities, mainly to keep the mental mapping to a minimum when 
@@ -173,8 +182,7 @@ void debounce_joystick_key(const int port_id, const byte key_id, const bool inve
           key_state[port_id][key_id] = KEY_STATE_WAIT_RELEASE;
 
           if (port_id == PORT_1 && key_id == KEY_MODE) {
-            flash_pwr(3);
-            c_to_jump = !c_to_jump;
+            toggle_mode();
           } else {
             #ifdef PWR_ACTIVITY
               boost_pwr();

@@ -6,6 +6,7 @@ void set_state(const int port_id, const byte key_id, const uint16_t the64_code, 
 void flip_state(const int port_id, const byte key_id, const uint16_t the64_code, const int period_on, const int period_off);
 void clear_state(const int port_id, const byte key_id, const uint16_t the64_code);
 void handle_state(const int port_id, const byte key_id, const uint16_t the64_code);
+void toggle_mode();
 
 void debounce_joystick_key(const int port_id, const byte key_id, const bool invert = false);
 bool is_waiting_release(const int port_id, const byte key_id);

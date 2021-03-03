@@ -57,4 +57,24 @@ const int KEY_PINS[PORT_COUNT][KEY_COUNT] = {
 #define KEY_STATE_WAIT_RELEASE 1
 #define KEY_STATE_ON_CYCLE 2
 #define KEY_STATE_OFF_CYCLE 3
+
+/* Specifies the minimum hold time of the magic key-combination to enable
+ * alternate mode. BOOT_DELAY specifies the length of the pause given the
+ * user to release the key combination.
+ */
+#define BOOT_MODE_THRESHOLD 1000
+#define BOOT_DELAY 1000
+
+/* Specify ALTERNATE_MODE to customize which mode is used when the mode button
+ * on the device is held during powerup. At the moment there is probably no
+ * alternative so leave it at this setting.
+ */
+#define PRIMARY_MODE KEY_MODE_DEFAULT
+#define ALTERNATE_MODE KEY_MODE_TURBO
+
+/* Uncomment one of these lines to force a specific mode, meaning that the
+ * the startup timer allowing you to hold in the mode button is removed.
+ */
+#define FORCE_PRIMARY
+//#define FORCE_ALTERNATE
 #endif

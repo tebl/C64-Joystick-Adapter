@@ -29,10 +29,10 @@
  * bottom if looking for a way to use the mode button on the controller as
  * normal.
  */
-#define SWAP_PORTS                    // Swap ports 1/2 (makes port 2 active)
+#define SWAP_PORTS                    // Makes port 2 the port that is used.
 //#define C_TO_JUMP                   // Defines if C to jump is the default
                                       // way to push up, MODE toggles.
-#define SWAP_AB                       // Swap A/B
+#define SWAP_AB                       // Swap A/B to match Mega Drive adapter.
 
 /* When uncommented this allows the PWR light to show joystick activity,
  * it'll grow brighter with movement and fade over time.
@@ -41,26 +41,6 @@
 #define PWR_ACTIVITY_MIN 8            // Defines a minimum activity LED level,
                                       // uncomment to allow fading out completely.
 #define LINK_AUTOFIRE_PWR             // PWR LED flickers in sync with autofire
-
-/* Specifies the minimum hold time of the magic key-combination to enable
- * alternate mode. BOOT_DELAY specifies the length of the pause given the
- * user to release the key combination.
- */
-#define BOOT_MODE_THRESHOLD 1000
-#define BOOT_DELAY 1000
-
-/* Specify ALTERNATE_MODE to customize which mode is used when the mode button
- * on the device is held during powerup. At the moment there is probably no
- * alternative so leave it at this setting.
- */
-#define PRIMARY_MODE KEY_MODE_DEFAULT
-#define ALTERNATE_MODE KEY_MODE_TURBO
-
-/* Uncomment one of these lines to force a specific mode, meaning that the
- * the startup timer allowing you to hold in the mode button is removed.
- */
-#define FORCE_PRIMARY
-//#define FORCE_ALTERNATE
 
 /* These numbers tune the time autofire and rapid fire spend in each of the
  * phases, meaning they specify how much time the fire button is held in and

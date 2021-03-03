@@ -69,6 +69,13 @@ namespace mode_default {
     #endif
   }
 
+  /* Deactivates autofire if it has has been enabled for any of the buttons. */
+  void deactivate_autofire(const int port_id) {
+    for (int key_id = 0; key_id < KEY_COUNT; key_id++) {
+      autofire_enabled[port_id][key_id] = false;
+    }
+  }
+
   /* An attempt to add a separate rapid fire button while maintaining the
    * autofire functionality. */
   void handle_multifire(const int port_id, const byte key_id, const uint16_t the64_code, const word sc_code, const word sc_rapid, const word gamepad_state, const word gamepad_last) {
@@ -158,12 +165,22 @@ namespace mode_default {
     if (is_key_active(gamepad_state, SC_BTN_MODE)) {
       if (is_key_active(gamepad_state, SC_BTN_X)) Joystick.button_press(THE64_BTN_TL);          // TL
       if (is_key_active(gamepad_state, SC_BTN_Z)) Joystick.button_press(THE64_BTN_TR);          // TR
+      
+      /* Button Y in this mode disables any active autofire buttons. */
+      if (!is_key_active(gamepad_state, SC_BTN_Y) && is_key_active(gamepad_last, SC_BTN_Y)) {
+        deactivate_autofire(port_id);
+      }
+
+      /* Toggle C_TO_JUMP, same as pushing mode on the device. */
+      if (!is_key_active(gamepad_state, SC_BTN_START) && is_key_active(gamepad_last, SC_BTN_START)) {
+        toggle_mode();
+      }
     } else {
       if (is_key_active(gamepad_state, SC_BTN_X)) Joystick.button_press(THE64_BTN_A);           // A
+      if (is_key_active(gamepad_state, SC_BTN_Y)) Joystick.button_press(THE64_BTN_B);           // B
       if (is_key_active(gamepad_state, SC_BTN_Z)) Joystick.button_press(THE64_BTN_C);           // C
+      if (is_key_active(gamepad_state, SC_BTN_START)) Joystick.button_press(THE64_BTN_MENU);    // Menu
     }
-    if (is_key_active(gamepad_state, SC_BTN_Y)) Joystick.button_press(THE64_BTN_B);             // B
-    if (is_key_active(gamepad_state, SC_BTN_START)) Joystick.button_press(THE64_BTN_MENU);      // Menu
 
     Joystick.usb_update();
   }
