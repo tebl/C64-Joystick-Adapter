@@ -29,7 +29,7 @@
  * bottom if looking for a way to use the mode button on the controller as
  * normal.
  */
-#define SWAP_PORTS                    // Swap around ports 1/2
+#define SWAP_PORTS                    // Swap ports 1/2 (makes port 2 active)
 //#define C_TO_JUMP                   // Defines if C to jump is the default
                                       // way to push up, MODE toggles.
 #define SWAP_AB                       // Swap A/B

@@ -169,8 +169,7 @@ namespace mode_default {
   }
 
   /* Takes care of updating key states, update_joystick takes care of actually
-  * sending the button states over USB.
-  */
+  * sending the button states over USB. */
   void update_port(const int port_id) {
     switch (port_id) {
       case PORT_1:
@@ -200,6 +199,6 @@ namespace mode_default {
 
     debounce_joystick_key(PORT_1, KEY_MODE, false);
     Joystick.reset();
-    update_port(PORT_2);
+    update_port(swap_ports ? PORT_2 : PORT_1);
   }
 }
