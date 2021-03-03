@@ -101,6 +101,11 @@ void Joystick_::button_press(uint16_t b)
   _buttons = _buttons | b;
 }
 
+void Joystick_::button_clear(uint16_t b) 
+{
+  bitClear(_buttons, b);
+}
+
 void Joystick_::usb_update()
 {
   // only send usb data if needed..

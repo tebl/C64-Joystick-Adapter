@@ -65,7 +65,7 @@ namespace mode_default {
       } else {
         /* Process button presses normally, run autofire if not being held. */
         if (is_key_active(gamepad_state, key_mask)) {
-          Joystick[port_id].setButton(key_id, is_key_active(gamepad_state, key_mask));
+          Joystick[port_id].setButton(key_id, true);
         } else {
           check_autofire_timers(port_id, key_id);
         }

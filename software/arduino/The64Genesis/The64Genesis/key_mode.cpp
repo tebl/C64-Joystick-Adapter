@@ -4,7 +4,6 @@
 #include "constants.h"
 #include "settings.h"
 #include "key_mode_default.h"
-//#include "key_mode_turbo.h"
 #include "led_control.h"
 
 extern bool boot_done;
@@ -59,8 +58,8 @@ bool init_mode(byte mode) {
   #ifdef SWAP_PORTS
     swap_ports = true;
   #endif
-  #ifdef SWAP_ABXY
-    swap_abxy = true;
+  #ifdef SWAP_AB
+    swap_ab = true;
   #endif
 
   /* Turn on LED if primary mode, flash on alternate mode instead. */
@@ -118,27 +117,32 @@ void set_linked_led(const bool value) {
 /* Sets a specific button state and updates timers for the next transition,
  * this should only be used with the rapid fire and autofire modes.
  */
-void set_state(const int port_id, const byte key_id, const uint16_t key_code, byte cycle, const int period) {
+void set_state(const int port_id, const byte key_id, const uint16_t the64_code, byte cycle, const int period) {
   set_linked_led(cycle == KEY_STATE_ON_CYCLE);
-  if (cycle == KEY_STATE_ON_CYCLE) Joystick.button_press(key_code);
   autofire_timer[port_id][key_id] = millis() + period;
   key_state[port_id][key_id] = cycle;
 }
 
-void flip_state(const int port_id, const byte key_id, const uint16_t key_code, const int period_on, const int period_off) {
-  if (key_state[port_id][key_id] == KEY_STATE_ON_CYCLE) set_state(port_id, key_id, key_code, KEY_STATE_OFF_CYCLE, period_off);
-  else set_state(port_id, key_id, key_code, KEY_STATE_ON_CYCLE, period_on);
+/* Handle the autofire state */
+void handle_state(const int port_id, const byte key_id, const uint16_t the64_code) {
+  if (key_state[port_id][key_id] == KEY_STATE_ON_CYCLE) {
+    Joystick.button_press(the64_code);
+  }
+}
+
+void flip_state(const int port_id, const byte key_id, const uint16_t the64_code, const int period_on, const int period_off) {
+  if (key_state[port_id][key_id] == KEY_STATE_ON_CYCLE) set_state(port_id, key_id, the64_code, KEY_STATE_OFF_CYCLE, period_off);
+  else set_state(port_id, key_id, the64_code, KEY_STATE_ON_CYCLE, period_on);
 }
 
 /* Clear key state, this is mainly just to ensure that we return to a neutral
  * state after turbo or autofire modes have previously been activated.
  */
-void clear_state(const int port_id, const byte key_id) {
+void clear_state(const int port_id, const byte key_id, const uint16_t the64_code) {
   if (key_state[port_id][key_id] != KEY_STATE_NEUTRAL) {
     set_linked_led(false);
     key_state[port_id][key_id] = KEY_STATE_NEUTRAL;
   }
-  //Joystick[port_id].setButton(key_id, false);
 }
 
 /* Manually clear the debouce key state. */
@@ -150,7 +154,7 @@ void clear_key(const int port_id, const byte key_id) {
 /* This might seem ridiculously complicated for reading a single button, and
  * you're definitely right! Function was copied entirely from JoyConverter with
  * all its complexities, mainly to keep the mental mapping to a minimum when 
- * moving code between the projects.
+ * moving code between projects.
  */
 void debounce_joystick_key(const int port_id, const byte key_id, const bool invert) {
   int current_port = port_id;

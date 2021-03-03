@@ -31,7 +31,7 @@
  */
 #define SWAP_PORTS                    // Swap around ports 1/2
 //#define C_TO_JUMP                   // C is now the UP button, MODE to toggle.
-//#define SWAP_AB                     // Swap A/B
+#define SWAP_AB                     // Swap A/B
 
 /* When uncommented this allows the PWR light to show joystick activity,
  * it'll grow brighter with movement and fade over time.

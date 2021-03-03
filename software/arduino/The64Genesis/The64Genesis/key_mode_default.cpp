@@ -29,21 +29,23 @@ namespace mode_default {
     pinMode(PIN_MODE, INPUT_PULLUP);
   }
 
-  void check_autofire_timers(const int port_id, const byte key_id, const uint16_t key_code) {
+  void check_autofire_timers(const int port_id, const byte key_id, const uint16_t the64_code) {
     /* Handle auto fire */
     if (autofire_enabled[port_id][key_id]) {
       if (millis() > autofire_timer[port_id][key_id]) {
-        flip_state(port_id, key_id, key_code, AUTO_FIRE_PERIOD_ON, AUTO_FIRE_PERIOD_OFF);
+        flip_state(port_id, key_id, the64_code, AUTO_FIRE_PERIOD_ON, AUTO_FIRE_PERIOD_OFF);
+      } else {
+        handle_state(port_id, key_id, the64_code);
       }
     } else {
-      clear_state(port_id, key_id);
+      clear_state(port_id, key_id, the64_code);
     }
   }
 
   /* Handle fire button, a normal press of the button will always take precedence
   * over auto fire. Autofire can be activated by holding MODE and then pushing
   * the button. */
-  void handle_autofire(const int port_id, const byte key_id, const uint16_t key_code, const word key_mask, const word gamepad_state, const word gamepad_last) {
+  void handle_autofire(const int port_id, const byte key_id, const uint16_t the64_code, const word key_mask, const word gamepad_state, const word gamepad_last) {
     #ifdef ENABLE_AUTO_FIRE
       if (is_key_active(gamepad_state, SC_BTN_MODE)) {
         /* Toggle autofire mode at the release of a button, but only do so while
@@ -53,17 +55,17 @@ namespace mode_default {
         }
 
         /* Keep auto fire running */
-        check_autofire_timers(port_id, key_id, key_code);
+        check_autofire_timers(port_id, key_id, the64_code);
       } else {
         /* Process button presses normally, run autofire if not being held. */
         if (is_key_active(gamepad_state, key_mask)) {
-          Joystick.button_press(key_code);
+          Joystick.button_press(the64_code);
         } else {
-          check_autofire_timers(port_id, key_id, key_code);
+          check_autofire_timers(port_id, key_id, the64_code);
         }
       }
     #else
-      Joystick.button_press(key_code);
+      Joystick.button_press(the64_code);
     #endif
   }
 
@@ -87,21 +89,21 @@ namespace mode_default {
     /* Swap left and right fire button */
     if (swap_ab) {
       handle_autofire(port_id, KEY_A, THE64_BTN_FIRE_R, SC_BTN_A, gamepad_state, gamepad_last); // Fire Left
-      handle_autofire(port_id, KEY_B, THE64_BTN_FIRE_R, SC_BTN_B, gamepad_state, gamepad_last); // Fire Right
+      handle_autofire(port_id, KEY_B, THE64_BTN_FIRE_L, SC_BTN_B, gamepad_state, gamepad_last); // Fire Right
     } else {
       handle_autofire(port_id, KEY_A, THE64_BTN_FIRE_L, SC_BTN_A, gamepad_state, gamepad_last); // Fire Left
       handle_autofire(port_id, KEY_B, THE64_BTN_FIRE_R, SC_BTN_B, gamepad_state, gamepad_last); // Fire Right
     }
 
     if (is_key_active(gamepad_state, SC_BTN_MODE)) {
-      if (is_key_active(gamepad_state, SC_BTN_X)) Joystick.button_press(THE64_BTN_TL);        // TL
-      if (is_key_active(gamepad_state, SC_BTN_Z)) Joystick.button_press(THE64_BTN_TR);        // TR
+      if (is_key_active(gamepad_state, SC_BTN_X)) Joystick.button_press(THE64_BTN_TL);          // TL
+      if (is_key_active(gamepad_state, SC_BTN_Z)) Joystick.button_press(THE64_BTN_TR);          // TR
     } else {
-      if (is_key_active(gamepad_state, SC_BTN_X)) Joystick.button_press(THE64_BTN_A);         // A
-      if (is_key_active(gamepad_state, SC_BTN_Z)) Joystick.button_press(THE64_BTN_C);         // C
+      if (is_key_active(gamepad_state, SC_BTN_X)) Joystick.button_press(THE64_BTN_A);           // A
+      if (is_key_active(gamepad_state, SC_BTN_Z)) Joystick.button_press(THE64_BTN_C);           // C
     }
-    if (is_key_active(gamepad_state, SC_BTN_Y)) Joystick.button_press(THE64_BTN_B);           // B
-    if (is_key_active(gamepad_state, SC_BTN_START)) Joystick.button_press(THE64_BTN_MENU);    // Menu
+    if (is_key_active(gamepad_state, SC_BTN_Y)) Joystick.button_press(THE64_BTN_B);             // B
+    if (is_key_active(gamepad_state, SC_BTN_START)) Joystick.button_press(THE64_BTN_MENU);      // Menu
 
     Joystick.usb_update();
   }
@@ -139,13 +141,5 @@ namespace mode_default {
     debounce_joystick_key(PORT_1, KEY_MODE, false);
     Joystick.reset();
     update_port(PORT_2);
-
-    /*
-    for (int port_id = 0; port_id < PORT_COUNT; port_id++) {
-      update_port(port_id);
-    }
-    */
-
-    delay(1);
   }
 }

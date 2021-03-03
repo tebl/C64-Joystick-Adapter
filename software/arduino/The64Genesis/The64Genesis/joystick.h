@@ -38,6 +38,7 @@ public:
   void down();
   void left();
   void button_press(uint16_t b);
+  void button_clear(uint16_t b);
   void usb_update(); 
 };
 extern Joystick_ Joystick;
