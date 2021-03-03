@@ -41,8 +41,8 @@ Given the example below, you would enable the autofire functionality by removing
 //#define ENABLE_AUTO_FIRE
 #define AUTO_FIRE_PERIOD_ON 80
 #define AUTO_FIRE_PERIOD_OFF 80
-#define RAPID_FIRE_PERIOD_ON 40
-#define RAPID_FIRE_PERIOD_OFF 40
+#define RAPID_FIRE_PERIOD_ON 70
+#define RAPID_FIRE_PERIOD_OFF 70
 ```
 
 **NB!** Note that you'll have to recompile and upload the new version of the firmware every time you make changes to it. There's no magic wireless version, unfortunately. I might add a way of storing the settings in the Arduino EEPROM, but I'm not sure the world needs another adapter with 30-page listing of incantations needed to change a setting - you have the code so you can change what you want.
