@@ -1,29 +1,39 @@
 # C64 Joystick to USB
-I picked up one of those fancy new Raspberry Pi 400 boxes lately, mainly in order to have just one more piece of technology in my home to play Commodore 64 games on - in addition to the actual Commodore 64 computers in almost all shapes and sizes. I could use my [C64 JoyKEY](https://github.com/tebl/C64-JoyKEY) in USB joystick mode on the new hardware, but that one is a whole different project - this is mostly focused around connecting one to two Atari-style joysticks to your modern computer over USB (note that modern in this case includes just about anything this side of the millennium).
 
-![C64 Joystick Adapter](https://github.com/tebl/C64-Joystick-Adapter/raw/main/gallery/adapter.jpg)
-
-It is only meant as a fun little project, but if you need one and would like to build it yourself - then this project contains PCB designs you need in addition to the Arduino code that powers it all. A picture of the completed unit along with one of the excellent ArcadeR joystick from RetroRadionics can be seen below.
+As with around 90% of my projects, it all somehow leads back to the Commodore 64 though sometimes even going quite beyond them as well (see [build options](#1-build-options) for these). In this case the idea was to put together a simple adapter so that I could use my Atari-style joysticks, vintage or otherwise, with modern systems over USB (including Raspberry Pi, The64 and the regular ones such as MS Windows 10).
 
 ![System picture](https://github.com/tebl/C64-Joystick-Adapter/raw/main/gallery/system.jpg)
 
-The firmware also supports paddles, these are mapped to the X and Y position in addition to registering a fire button for each of them (this is because a single port can hold two paddles, so with two ports we could potentially have up to four paddles). This is the mode mentioned in **settings.h**, you can enter paddle mode by holding down the mode button when powering on the unit (hold it down until the LED blinks).
+The [JoyConverter](https://github.com/tebl/C64-Joystick-Adapter/tree/main/software/arduino/JoyConverter) firmware also supports paddles, these are mapped to the X and Y position in addition to registering a fire button for each of them (this is because a single port can hold two paddles, so with two ports we could potentially have up to four paddles). This is the mode mentioned in **settings.h**, you can enter paddle mode by holding down the mode button when powering on the unit (hold it down until the LED blinks).
 
-One rather irritating problem with the C64 was that various games expected that your joystick is inserted into different joystick ports, on this adapter this have been solved in software - pressing the **mode** button will effectively swap the active port. It was irritating enough on the physical machine as well, so that bit has been perfectly emulated (on a physical Commodore 64, a different solution is the [C64 Joystick Switcher](https://github.com/tebl/C64-Joystick-Switcher)).
+One rather irritating problem with the C64 was that various games expected that your joystick is inserted into different joystick ports. For that reason I've added a bit of logic to the firmware to solve this, pushing the **mode** button will swap the active port so that you don't need to swap the cables or deal with this in the emulator settings separately. It was irritating enough on the physical machine as well, so that bit can certainly be said to have been perfectly emulated as well (on a physical Commodore 64, a different solution is the [C64 Joystick Switcher](https://github.com/tebl/C64-Joystick-Switcher)).
 
-# 1> Building the adapter
-I'm not going to go into great detail on this point as there is not much that can go wrong when soldering together this unit, just ensure that you have tools of at least moderate quality and you should not have much problems with it. That usually means a temperature-controlled soldering iron, some solder that isn't the kind used to weld pipes (the electronics version) and a table that isn't considered flamable. First things first though, is actually getting the parts - check the [BOM](#2-bom)-section below for a complete list. 
+# 1> Build options
+As already hinted at, the PCB design has been designed so that you have a few alternatives as to how you want to build up the PCB as well as the firmware options that are available to you. Given that there are some differences in the components used, make sure that you have a read through of the following sections before commiting to either of them.
 
-Everything ready to go? Then start your soldering iron, wait until sufficiently hot without getting distracted by the TV and start with the smallest of the components - the resistors. Work your way up the size-scale from that point until you've populated everything, or at least populated the components you have an interest in having there. Save the Arduino Pro Micro for last.
+# 1.1> C64 Joystick Adapter
+This is the version of the adapter that has been described so far, it requires **all** of the components listed in the [BOM](#-bom) and allows you to use up to two Atari-style joysticks or paddles on a modern system with USB-adapters. On the back of the PCB there are a four solder jumpers that need to be soldered so that pins **1-2** are bridged (marked Atari) - pin 1 is indicated by a square pad.
 
-Over to the Arduino Pro Micro, as advertised. At this point you'll need to consider if you want to be able to remove the board and use it for another project later, if so - use some female header pins on either the adapter PCB or the Arduino PCB so that you can unplug it later (desoldering is hard, but they're only around 5$ so might as well just buy a new one). When soldering on the pins, ensure that it fits into the form factor your board has (some are a bit smaller, which in not so many words, explains why there are two rows of pins on one side).
+This build supports the following firmware alternatives:
 
-# 1.1> In case of trouble
-There are not many components on this board, but if you get into trouble there is usually a way to work logically through the circuit in order to pinpoint where the fault is; is the Arduino working, or is there just one part of the circuit that does not appear to work? One problem might simply be that the Arduino is faulty -  they are produced at minimal cost, so it happens - try if a simple blink sketch work on it first. If you can't get anything to install on it, including the blink sketch - there is a good troubleshooting article on the [sparkfun](https://learn.sparkfun.com/tutorials/pro-micro--fio-v3-hookup-guide/all) (note that you'll most likely need the reset switch installed on the PCB).
+- [JoyConverter](https://github.com/tebl/C64-Joystick-Adapter/tree/main/software/arduino/JoyConverter)
 
-For everything that has already been mentioned, and the things I've probably forgotten to include - you'll need to check out the [schematic](https://github.com/tebl/C64-Joystick-Adapter/tree/main/documentation/schematic) for this project.
+# 1.2> Sega Gamepad Adapter
+Uses the same PCB as the *C64 Joystick Adapter*, but instead of allowing you to plug in Atari-style joysticks - this version instead allows you to use Sega Master System and Sega Mega Drive (Sega Genesis in North America) controllers. It is constructed in mainly the same way, except that you should **not** install resistors R1-R4 and then link the four solder jumpers across pins **2-3** (marked Sega) - pin 1 is indicated by a square pad.
 
-# 1.2> Installing the firmware
+This build supports the follwing firmware alternatives:
+
+- [GenesisMachine](https://github.com/tebl/C64-Joystick-Adapter/tree/main/software/arduino/GenesisMachine)
+- [The64Genesis](https://github.com/tebl/C64-Joystick-Adapter/tree/main/software/arduino/The64Genesis)
+
+# 2> Building the adapter
+I'm not going to go into great detail on this point as there is not much that can go wrong when soldering together this unit, just ensure that you have tools of at least moderate quality and you should not have much problems with it. That usually means a temperature-controlled soldering iron, some solder that isn't the kind used to weld pipes (the electronics version) and a table that isn't considered flammable. First things first though, is actually getting the parts - check the [BOM](#3-bom)-section below for a complete list. Note that [build options](#1-build-options) describe different ways of assembling the board.
+
+Everything ready to go? Then start your soldering iron, wait until sufficiently hot without getting distracted by the TV and start with the smallest of the components - the resistors (R1-R4 not installed with Sega controllers). Work your way up the size-scale from that point until you've populated everything, or at least populated the components you have an interest in having there. Save the Arduino Pro Micro for last.
+
+Onto the last bit, soldering in the Arduino Pro Micro. One side of the footprint will have two sets of pins next to each other, this is to account for the two most common versions of the Arduino Pro being sold. 
+
+# 2.1> Installing the firmware
 Installing the firmware is mostly just opening up the Arduino sketch found within the software directory of this project, in case you're wondering - the reason for the elaborate folder structure is because I'm using PlatformIO as my development environment, but if you only want to use the device you'll only need *Arduino Studio*.
 
 If you're using PlatformIO you probably won't need to perform any further steps to make it all work, for the Arduino Studio there is one separate library that you will need to install manually. The library is called [ArduinoJoystickLibrary](https://github.com/MHeironimus/ArduinoJoystickLibrary), you'll have to download and install that one according to the  [installation-instructions](https://github.com/MHeironimus/ArduinoJoystickLibrary#installation-instructions) provided by the author.
@@ -32,7 +42,7 @@ Finally you'll need to ensure that you have the correct board type selected for 
 
 ![Board selection](https://github.com/tebl/C64-Joystick-Adapter/raw/main/software/arduino/JoyConverter/arduino_settings.png)
 
-# 1.3> Testing it out
+# 2.2> Testing it out
 Actually testing it out in practice depends on the operating system running on the machine you're using it on, but if it's anything other than MS Windows 10 or Mac OS I'll just assume that you know what you're doing. Can't help you with the Mac OS unless someone gifts me a brand new Mac for this purpose, so for now - I'll just describe things from a Windows-based perspective.
 
 The operating system (*Windows* was the assumption if you're still here) will see the adapter as two separate joysticks, no matter if any is plugged in - this is just the way those work. For an overview just hit the Windows-button (still *Windows*, unfortunately) and start typing in something like *Set up USB game controllers* and start that - you should see both of them, double-click one and you'll be able to test it all out (four directions, one button).
@@ -41,7 +51,14 @@ When it comes to emulators I've tried out Vice for Windows, here you'll need to 
 
 I also tried out the WinAPE emulator (emulate the Amstrad CPC line of computers), and as far as I can tell it works right out of the box. Yay!
 
-# 2> BOM
+# 2.3> In case of trouble
+There are not many components on this board, but if you get into trouble there is usually a way to work logically through the circuit in order to pinpoint where the fault is; is the Arduino working, or is there just one part of the circuit that does not appear to work?
+
+One problem might simply be that the Arduino is faulty -  they are produced at minimal cost, so it happens - try if a simple blink sketch work on it first. If you can't get anything to install on it, including the blink sketch - there's a pretty good troubleshooting article on the [sparkfun](https://learn.sparkfun.com/tutorials/pro-micro--fio-v3-hookup-guide/all) (note that you'll most likely need the reset switch installed on the PCB).
+
+For everything that has already been mentioned, and the things I've probably forgotten to include - you'll need to check out the [schematic](https://github.com/tebl/C64-Joystick-Adapter/tree/main/documentation/schematic) for this project.
+
+# 3> BOM
 If you want to build a C64 Joystick Adapter that converts standard Atari-style joysticks into USB joysticks, then this is mainly the list of all the parts that you'd need for it. Most you should be able to get from your friendly neighbourhood electronics store, but I don't have any of those - so consider this a list of search tips for ebay, AliExpress, banggood or any similar site. Any parts listed in parenthesis might strictly not be needed for basic functionality for a single joystick, but if you're ordering stuff you might as well build the whole thing.
 
 | Reference            | Item                                              | Count | Order  |
