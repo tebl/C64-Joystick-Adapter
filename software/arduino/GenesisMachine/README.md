@@ -5,11 +5,15 @@ This firmware was developed in order to use various Sega controllers with the *C
 ![](https://github.com/tebl/C64-Joystick-Adapter/raw/main/gallery/system2.jpg)
 ![Jumpers](https://github.com/tebl/C64-Joystick-Adapter/raw/main/gallery/build_003.jpg)
 
-The usual mode of operation allows you to use all buttons on a 6-button controller, if the auto fire functionality has been enabled in the settings - then the controller *MODE* button will be used when toggling auto fire on/off (hold *MODE*, press the button to activate the function for and then release *MODE* in order to use this function reliably.
+The usual mode of operation allows you to use all buttons on a 6-button controller, if the auto fire functionality has been enabled in the settings - then the controller *MODE* button will be used when toggling auto fire on/off (hold *MODE*, press the button to activate the function for and then release *MODE* in order to use this function reliably. The default controller layout is shown below.
 
-As with the original JoyConverter firmware for Atari-style joysticks, GenesisMachine also has an alternate mode of operation that is enabled by holding down *MODE* on the **device** (not the one on the controller). The LED will flash to show that you've successfully set it to the alternate mode. In the alternate mode, a 6-button controller will function as a 3-button turbo controller (XYZ is now used for the turbo function). As with the other firmware, you can also use autofire here though you can only enable it for the ABC buttons (again, hold *MODE* on the controller and press the button to toggle function on/off - then realease *MODE*).
+![Default 6-button layout](https://github.com/tebl/C64-Joystick-Adapter/raw/main/software/arduino/GenesisMachine/controller_layout.png)
 
-At this point you'll be wondering what the *MODE* button on the device does - well, it remaps the C button to the UP direction (disabling D-pad UP). This should make things a lot easier when using the adapter and controller combination on with games originally made with joystick in mind, such as platformers on C64 and Amiga that required you to press UP to jump).
+As with the original JoyConverter firmware for Atari-style joysticks, GenesisMachine also has an alternate mode of operation that is enabled by holding down *MODE* on the **device** (not the one on the controller). The LED will flash to show that you've successfully set it to the alternate mode. In the alternate mode, a 6-button controller will function as a 3-button turbo controller (XYZ is now used for the turbo function). As with the other firmware, you can also use autofire here though you can only enable it for the ABC buttons (again, hold *MODE* on the controller and press the button to toggle function on/off - then realease *MODE*). The alternate mode controller layout is shown below.
+
+![3-button turbo layout](https://github.com/tebl/C64-Joystick-Adapter/raw/main/software/arduino/GenesisMachine/controller_alternate.png)
+
+At this point you'll be wondering what the *MODE* button on the device does - well, it remaps the C button to the UP direction (disabling D-pad UP). This should make things a lot easier when using the adapter and controller combination on with games originally made with joystick in mind, such as platformers on C64 and Amiga that required you to press UP to jump). This is the same in either of the primary or alternate mode.
 
 ### Settings
 The Arduino sketch have some configurable options, you'll need to edit the file named **settings.h**. Have a read through the comments to see if there is anything you want to customize to your liking, lines without a value attached to them are disabled by commenting the line.
@@ -21,3 +25,11 @@ Given the example below, you would enable the autofire functionality by removing
 #define AUTO_FIRE_PERIOD_OFF 80
 #define RAPID_FIRE_PERIOD_ON 70
 #define RAPID_FIRE_PERIOD_OFF 70
+```
+
+Note that you can configure the adapter to always be in the alternate mode, or just skip the button selection logic and always use the default layout. This behaviour can be selected by uncommenting either of the two following lines.
+
+```
+//#define FORCE_PRIMARY
+//#define FORCE_ALTERNATE
+```
