@@ -3,4 +3,5 @@
   (lib (name atari_joystick)(type Legacy)(uri $KIPRJMOD/../common/library/atari_joystick.lib)(options "")(descr ""))
   (lib (name arduino_pro_micro)(type Legacy)(uri $KIPRJMOD/../common/library/arduino_pro_micro.lib)(options "")(descr ""))
   (lib (name c64_idc)(type Legacy)(uri $KIPRJMOD/../common/library/c64_idc.lib)(options "")(descr ""))
+  (lib (name nes_joypad)(type Legacy)(uri $KIPRJMOD/../common/library/nes_joypad.lib)(options "")(descr ""))
 )

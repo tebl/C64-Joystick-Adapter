@@ -10,8 +10,8 @@ Rev "A"
 Comp ""
 Comment1 ""
 Comment2 ""
-Comment3 ""
-Comment4 "Allows the connection of C64 controllers to modern PC over USB."
+Comment3 "for Sega and Nintendo controllers with some modifications."
+Comment4 "Allows the connection of C64 controllers to modern PC over USB. Also includes support"
 $EndDescr
 $Comp
 L atari_joystick:Atari_Joystick J2
@@ -629,4 +629,61 @@ Wire Wire Line
 	3675 2675 3750 2675
 Text Notes 4375 4275 0    50   ~ 0
 Atari and compatibles:\nSYSTEM soldered 1-2,\nR1-R4 installed.\n\nSega controller:\nSystem soldered 2-3,\nR1-R4 not installed.
+$Comp
+L nes_joypad:NES_Gamepad #J3
+U 1 1 6216E896
+P 1550 1000
+F 0 "#J3" H 1400 1292 50  0000 C CNN
+F 1 "NES_Gamepad" H 1400 1201 50  0000 C CNN
+F 2 "" H 1275 900 50  0001 C CNN
+F 3 "" H 1275 900 50  0001 C CNN
+	1    1550 1000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0112
+U 1 1 62171B05
+P 1775 1475
+F 0 "#PWR0112" H 1775 1225 50  0001 C CNN
+F 1 "GND" H 1780 1302 50  0000 C CNN
+F 2 "" H 1775 1475 50  0001 C CNN
+F 3 "" H 1775 1475 50  0001 C CNN
+	1    1775 1475
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1700 1000 1775 1000
+Wire Wire Line
+	1775 1000 1775 1475
+$Comp
+L power:VCC #PWR0113
+U 1 1 6218608F
+P 1025 1025
+F 0 "#PWR0113" H 1025 875 50  0001 C CNN
+F 1 "VCC" H 1042 1198 50  0000 C CNN
+F 2 "" H 1025 1025 50  0001 C CNN
+F 3 "" H 1025 1025 50  0001 C CNN
+	1    1025 1025
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1025 1025 1025 1100
+Wire Wire Line
+	1025 1100 1100 1100
+NoConn ~ 1100 1200
+NoConn ~ 1100 1300
+Text GLabel 1850 1300 2    50   Input ~ 0
+P2_LEFT
+Text GLabel 1850 1200 2    50   Input ~ 0
+P2_DOWN
+Text GLabel 1850 1100 2    50   Input ~ 0
+P2_UP
+Wire Wire Line
+	1700 1100 1850 1100
+Wire Wire Line
+	1700 1200 1850 1200
+Wire Wire Line
+	1700 1300 1850 1300
+Text Notes 700  2050 0    50   ~ 0
+Female NES gamepad connector is soldered\nto J3 with the pins as shown, the cable has\nbeen made from an NES extension cut in\ntwo pieces.
 $EndSCHEMATC
