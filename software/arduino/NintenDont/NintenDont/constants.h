@@ -23,6 +23,8 @@
  */
 #define LED_OFF 0
 #define KEY_MODE_DEFAULT 0
+#define AXIS_RANGE 1
+#define AXIS_NEUTRAL 0
 
 /* These are the button IDs seen on computer */
 #define SC_KEY_B 0

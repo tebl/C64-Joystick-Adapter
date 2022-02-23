@@ -23,9 +23,9 @@ namespace mode_default {
     pinMode(PIN_DATA, INPUT);
 
     /* Initialize port */
-    Joystick.setXAxisRange(-1, 1);
-    Joystick.setYAxisRange(-1, 1);
     Joystick.begin(false);
+    Joystick.setXAxisRange(-AXIS_RANGE, AXIS_RANGE);
+    Joystick.setYAxisRange(-AXIS_RANGE, AXIS_RANGE);
   }
   
   bool is_key_active(const byte gamepad_state, const byte key) {
@@ -41,15 +41,15 @@ namespace mode_default {
       #endif
     }
 
-    if (is_key_active(gamepad_state, KEY_LEFT) && is_key_active(gamepad_state, KEY_RIGHT)) Joystick.setXAxis(0);
-    else if (is_key_active(gamepad_state, KEY_LEFT)) Joystick.setXAxis(-1);
-    else if (is_key_active(gamepad_state, KEY_RIGHT)) Joystick.setXAxis(1);
-    else Joystick.setXAxis(0);
+    if (is_key_active(gamepad_state, KEY_LEFT) && is_key_active(gamepad_state, KEY_RIGHT)) Joystick.setXAxis(AXIS_NEUTRAL);
+    else if (is_key_active(gamepad_state, KEY_LEFT)) Joystick.setXAxis(-AXIS_RANGE);
+    else if (is_key_active(gamepad_state, KEY_RIGHT)) Joystick.setXAxis(AXIS_RANGE);
+    else Joystick.setXAxis(AXIS_NEUTRAL);
 
-    if (is_key_active(gamepad_state, KEY_UP) && is_key_active(gamepad_state, KEY_DOWN)) Joystick.setYAxis(0);
-    else if (is_key_active(gamepad_state, KEY_UP)) Joystick.setYAxis(-1);
-    else if (is_key_active(gamepad_state, KEY_DOWN)) Joystick.setYAxis(1);
-    else Joystick.setYAxis(0);
+    if (is_key_active(gamepad_state, KEY_UP) && is_key_active(gamepad_state, KEY_DOWN)) Joystick.setYAxis(AXIS_NEUTRAL);
+    else if (is_key_active(gamepad_state, KEY_UP)) Joystick.setYAxis(-AXIS_RANGE);
+    else if (is_key_active(gamepad_state, KEY_DOWN)) Joystick.setYAxis(AXIS_RANGE);
+    else Joystick.setYAxis(AXIS_NEUTRAL);
 
     Joystick.setButton(SC_KEY_B, is_key_active(gamepad_state, KEY_B));
     Joystick.setButton(SC_KEY_A, is_key_active(gamepad_state, KEY_A));
