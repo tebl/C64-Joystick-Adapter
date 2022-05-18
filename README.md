@@ -85,7 +85,7 @@ If you want to build a C64 Joystick Adapter that converts standard Atari-style j
 | Faceplate (PCB) **   | Fabricate using Gerber files                      |    (1)| [PCBWay](https://www.pcbway.com/project/shareproject/C64_Joystick_Adapter__Faceplate_.html) |
 | A1                   | Arduino Pro Micro                                 |     1 |        |
 | D1                   | 5mm LED                                           |    (1)|        |
-| J1,J2                | Female DB9 right-angle connector                  |  1 (1)|        |
+| J1,J2                | Male DB9 right-angle connector                  |  1 (1)|        |
 | R1-R4                | 220k Ohm resistor                                 |    (4)|        |
 | R5                   | 330 Ohm resistor                                  |    (1)|        |
 | SW1 *                | 6x6mm momentary button                            |    (1)|        |
